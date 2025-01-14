@@ -141,7 +141,7 @@ UI 컴포넌트에서 UI 소스 부분에 서비스 로직이 들어있는 경�
 물론 내가 사용하던 폴더 구조와는 많이 다르게 생겼다. 
 `layer`로 둬서 같은 엄격하게 폴더에 들어갈 소스 위치를 구분하고 `feature`에서 기능을 묶는 방법론이다.
 
-![FSD Scheme.png](FSD Scheme.png)
+![FSD Scheme.png]($PROJECT_DIR$/images/FSD Scheme.png)
 
 위 사진만으로 이해가 되지않지만, FSD 홈페이지를 가보면, 예제와 마이그레이션 방법도 친절히 나와있다.
 
@@ -202,7 +202,7 @@ src/
 
 > bulletproof 는 안정적인 코드를 뜻한다.
 
-![bulletproof-react.png](bulletproof-react.png)
+![bulletproof-react.png]($PROJECT_DIR$/images/bulletproof-react.png)
 
 `feature` 폴더 하나를 기준으로 보면, 내가 사용하는 폴더구조와 비슷하게 한 곳에서 관련된 소스들을 관리한다.
 하지만 `FSD`와 비슷하게 `app` 폴더에서 어플리케이션 구조를 만든다. `pages` 폴더 없이 `app`폴더에서 모두 관리한다.
