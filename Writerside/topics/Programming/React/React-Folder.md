@@ -84,15 +84,16 @@ src/
 광범위하게 흩어진 코드를 찾으러 다녀야해서 너무 힘들었다.
 
 > 그래서 생각한 것은 
-> URL 경로와 페이지 컴포넌트는 보통 1 : 1 이니까 경로에 맞게 폴더 구조를 만들자! 였다.
+> 1. URL 경로와 페이지 컴포넌트는 보통 1 : 1 이니까 경로에 맞게 폴더 구조를 만들기
+> 2. 특성이 같고, 수정사항이 많은 파일의 경우는 같은 곳에 넣어두자
 
 ## 내가 사용하던 폴더 구조
 
 - 아래 조건들에 맞춰 `pages` 폴더를 좀더 구체화 하였다.
-  - 프로젝트 규모가 작음
-  - 라우팅 되는 URL 경로 구조와 `pages` 폴더 구조가 같아야 함
+  - 프로젝트 규모가 작다
+  - 라우팅 되는 URL 경로 구조와 `pages` 폴더 구조가 같도록 한다
     - 폴더로 라우팅 구조 파악 가능
-  - 중요 로직은 커스텀 훅에서 관리
+  - 중요 로직은 커스텀 훅에서 관리한다
     - UI와 로직 분리
 
 ```
@@ -102,7 +103,7 @@ src/
 │       └── board/                  # URL 경로
 │            ├── components/        # 종속된 UI 컴포넌트
 │            │    ├── hooks/        # 종속된 커스텀 훅
-│		     │    │    └── use-board-header.tsx
+│		     │    │    └── use-board-header.ts
 │		     │    │    
 │		     │    └── board-header.tsx
 │            ├── hooks/             # 종속된 커스텀 훅
@@ -130,6 +131,9 @@ src/
 프로젝트를 혼자하는 것도 아니고, 새로 들어오는 개발자에게 폴더 구조를 몇 시간동안 강의할 것이 아니라면
 이해가 가는 선에서 구조를 만들어주는 방향은 정말 좋은 것 같다.
 
+또한 커스텀 훅 패턴으로 훅에 로직을 모두 넣어두고 컴포넌트에서 불러오는 방식이 유지보수 방면에서 좋다고 느꼈다.
+UI 컴포넌트에서 UI 소스 부분에 서비스 로직이 들어있는 경우 소스 보기가 불편한 경우가 많았다..
+
 ## 유명한 FSD
 
 위 구조를 보면 `게시판`이라는 특징을 가진 기능을 `board` 폴더로 묶은 모습을 볼 수 있다.
@@ -140,11 +144,12 @@ src/
 ![FSD Scheme.png](FSD Scheme.png)
 
 위 사진만으로 이해가 되지않지만, FSD 홈페이지를 가보면, 예제와 마이그레이션 방법도 친절히 나와있다.
-그 중에 `layer` 내용만 가져와보겠다.
+
+[FSD 마이그레이션 방법](https://feature-sliced.design/docs/guides/migration/from-v1) 그 중에 `layer` 내용만 가져와보겠다.
 
 - FSD Layer
   - /app — application initialization layer 
-    - Previous versions: app, core,init, src/index (and this happens)
+    - Previous versions: app, core, init, src/index (and this happens)
   - /processes — business process layer
     - Previous versions: processes, flows, workflows 
   - /pages — application page layer
@@ -157,3 +162,69 @@ src/
     - Previous versions: shared, common, lib
 
 여기서 크게 `app / pages / features` 만 봐도 좋다.
+
+```
+src/
+├── app
+│       ├── layout/
+│       ├── providers/  
+│       ├── routers/
+│       └── App.tsx
+├── pages
+│       └── board/                         
+│            └── board-page.tsx
+├── features
+│       └── board/                         
+│            └── ui/                         
+│		          └── board-header.tsx
+├── entities
+│       └── board/                         
+│		     └── types.ts
+├── shared
+│       └── api/                         
+│            └── board/                        
+│		          └── board-api.ts
+│       └── assets/                        
+│       └── lib/                         
+└── 
+```
+
+크게 내용을 넣진 않았지만, `app` > `pages` > `features` > `entities` > `shared` 형식으로 층을 나누어서 자기보다 아래에 있는 층만
+참조해서 가져오는 방식이다.
+복잡하지만 상당히 큰 프로젝트에는 모든 기능이 나눠져있어 관리하는 부분에선 좋을 것이다.
+
+## MIT 리액트 아키텍처
+
+[MIT 리액트 아키텍처](https://github.com/alan2207/bulletproof-react/)
+
+리액트 아키텍처 구조를 가이드처럼 만들어둔 레포가 있다. `Star 29k` 가 넘어간 유명한 레포며, `feature`를 기준으로 폴더를 설계하였다.
+`nextjs 앱`, `nextjs 웹`, `react-vite` 세개의 구조를 보여준다.
+
+> bulletproof 는 안정적인 코드를 뜻한다.
+
+![bulletproof-react.png](bulletproof-react.png)
+
+`feature` 폴더 하나를 기준으로 보면, 내가 사용하는 폴더구조와 비슷하게 한 곳에서 관련된 소스들을 관리한다.
+하지만 `FSD`와 비슷하게 `app` 폴더에서 어플리케이션 구조를 만든다. `pages` 폴더 없이 `app`폴더에서 모두 관리한다.
+
+```
+src/features/awesome-feature
+|
++-- api         # exported API request declarations and api hooks related to a specific feature
+|
++-- assets      # assets folder can contain all the static files for a specific feature
+|
++-- components  # components scoped to a specific feature
+|
++-- hooks       # hooks scoped to a specific feature
+|
++-- stores      # state stores for a specific feature
+|
++-- types       # typescript types used within the feature
+|
++-- utils       # utility functions for a specific feature
+```
+
+## 정리
+
+`FSD`, `bulletproof-react repository`를 구경해봤다. 현재 상황에서 어떤 폴더 구조를 따라갈지 눈에 보이기도하고, 
