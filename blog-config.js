@@ -3,11 +3,11 @@ module.exports = {
   headerTitle: "Pang<em style='color:#ed6c02'>sby</em>", // Logo 1
   headerSubTitle: "<em style='color:#ed6c02'>Pang</em>sby", // Logo 2
   copyright: "©Pangsby", // copyright in footer
-  author: "YOUR:NAME", // Your Name
-  siteUrl: "https://rundevelrun.netlify.app", // Your Site URL
+  author: "Pang", // Your Name
+  siteUrl: "https://pang-ho.github.io/", // Your Site URL
   description: "Hi, Nice to meet you !", // Blog description
   links: {
-    github: "https://github.com/rundevelrun",
+    github: "https://github.com/Pang-Ho",
     linkedIn: "https://linkedin.com",
     facebook: "https://www.facebook.com",
     twitter: "https://twitter.com",
