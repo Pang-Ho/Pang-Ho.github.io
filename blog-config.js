@@ -1,7 +1,7 @@
 module.exports = {
   title: "Pangsby", // SEO Blog title
   headerTitle: "Pang<em style='color:#ed6c02'>sby</em>", // Logo 1
-  headerSubTitle: "<em style='color:#ed6c02'>Pang</em>sby", // Logo 2
+  // headerSubTitle: "<em style='color:#ed6c02'>Pang</em>sby", // Logo 2
   copyright: "©Pangsby", // copyright in footer
   author: "Pang", // Your Name
   siteUrl: "https://pang-ho.github.io/", // Your Site URL
@@ -9,15 +9,15 @@ module.exports = {
   links: {
     github: "https://github.com/Pang-Ho",
     linkedIn: "https://linkedin.com",
-    facebook: "https://www.facebook.com",
-    twitter: "https://twitter.com",
-    x: "https://x.com",
-    instagram: "https://www.instagram.com/niphyang.flow",
-    medium: "https://medium.com",
-    blogger: "https://blogger.com",
-    email: "mailto:niphyang@naver.com",
-    resume: "https://6developer.com",
-    link: "https://6developer.com",
+    // facebook: "https://www.facebook.com",
+    // twitter: "https://twitter.com",
+    // x: "https://x.com",
+    // instagram: "https://www.instagram.com/niphyang.flow",
+    // medium: "https://medium.com",
+    // blogger: "https://blogger.com",
+    // email: "mailto:niphyang@naver.com",
+    // resume: "https://6developer.com",
+    // link: "https://6developer.com",
   },
   giscus: {
     repo: "rundevelrun/gatsby-starter-rundevelrun",
