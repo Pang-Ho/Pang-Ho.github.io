@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://pang-ho.github.io/sitemap-index.xml
+Host: https://pang-ho.github.io
