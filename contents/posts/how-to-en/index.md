@@ -1,44 +1,15 @@
-<h1 align="center">
-  👋
-</h1>
-<h1 align="center">
-  gatsby-starter-rundevelrun
-</h1> 
+---
+emoji: "🚀"
+title: "How do we get started?"
+date: 2025-01-19 13:55:00
+update: 2025-01-19 13:55:00
+tags:
+   - rundevelrun
+   - howto
+series: "Getting Started with Gatsby Blog"
+---
 
 > ⚠️ Since a translator was used, there may be inaccuracies.
-
-> [한국어로 보기](https://github.com/rundevelrun/gatsby-starter-rundevelrun/blob/develop/README-kr.md)
-
-## 🎬 Introduction
-
-<img src="screen.png"/>
-
-Based on the original source by [devHudi↗](https://github.com/devHudi/gatsby-starter-hoodie), some UI elements and features have been modified.
-We will continue to update and fix any shortcomings.
-
-Thank you for making the source available.
-
-## ▶️️ Live Demo
-
-> [https://6developer.com](https://6developer.com)
-
-## ✅ Key Features
-
-> - Adsense
->   - Insert ads at the top/bottom of the content, below the ToC, and between lists (Update. 2025-01-21)
->  <br/> <br/>
-> - SEO
->   - SEO optimization (Update. 2025-01-19)
-
-> <br/> <br/>
-> - Markdown
-> - Code highlighting
-> - Katex syntax
-> - Dark mode (integrated with OS settings)
-> - Tag classification
-> - Series classification
-> - Responsive web design
-> - Giscus
 
 ## 🧪 Test Environment
 > NodeJS v22.13.0 <br/>
@@ -98,8 +69,8 @@ module.exports = {
 
 ## 📝 Writing Posts
 1. Create a post file in the `contents/posts` folder (two methods)
-    1. Create a folder with the name to be used as the pathname and create an 'index.md' inside it
-    2. Create a `*.md` file with the name to be used as the pathname
+   1. Create a folder with the name to be used as the pathname and create an 'index.md' inside it
+   2. Create a `*.md` file with the name to be used as the pathname
 2. Write frontmatter
    ```yaml
    ---
