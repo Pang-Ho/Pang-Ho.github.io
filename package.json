@@ -2,7 +2,7 @@
   "name": "gatsby-starter-rundevelrun",
   "private": false,
   "description": "gatsby-starter-rundevelrun is a gatsby theme developed for developers to write tech blogs.",
-  "homepage": "https://6developer.com",
+  "homepage": "https://pang-ho.github.io",
   "version": "0.0.1",
   "author": "RUN:DEVEL:RUN",
   "dependencies": {
@@ -86,9 +86,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rundevelrun/gatsby-starter-rundevelrun"
+    "url": "https://github.com/Pang-Ho/Pang-Ho.github.io"
   },
   "bugs": {
-    "url": "https://github.com/rundevelrun/gatsby-starter-rundevelrun"
+    "url": "https://github.com/Pang-Ho/Pang-Ho.github.io"
   }
 }
