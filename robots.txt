@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://rundevelrun.netlify.app/sitemap-index.xml
-Host: https://rundevelrun.netlify.app
+Sitemap: https://pang-ho.github.io/sitemap-index.xml
+Host: https://pang-ho.github.io
