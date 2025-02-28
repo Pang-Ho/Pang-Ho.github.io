@@ -77,6 +77,7 @@ const config: GatsbyConfig = {
         footnotes: true,
         gfm: true,
         plugins: [
+          `gatsby-remark-mermaid`,
           {
             resolve: `gatsby-remark-katex`,
             options: {
