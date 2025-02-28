@@ -165,15 +165,21 @@ const Header = ({ toggleTheme }) => {
               <FaMoon onClick={toggleTheme} />
             </IconRail>
           </ToggleWrapper>
-          <Link to="/tags">
-            <FaTags />
-          </Link>
-          <Link to="/series">
-            <FaListUl />
-          </Link>
-          <Link to="/search">
-            <FaSearch />
-          </Link>
+          <ToggleWrapper>
+            <Link to="/tags">
+              <FaTags />
+            </Link>
+          </ToggleWrapper>
+          <ToggleWrapper>
+            <Link to="/series">
+              <FaListUl />
+            </Link>
+          </ToggleWrapper>
+          <ToggleWrapper>
+            <Link to="/search">
+              <FaSearch />
+            </Link>
+          </ToggleWrapper>
         </Menu>
       </Inner>
     </HeaderWrapper>
