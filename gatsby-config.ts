@@ -1,7 +1,6 @@
 import { GatsbyConfig } from 'gatsby';
 import blogConfig from './blog-config';
 
-// const blogConfig = require('./blog-config');
 const { title, description, author, siteUrl, adsense } = blogConfig;
 
 const adsenseClient = adsense == undefined ? '' : adsense.client;
@@ -75,11 +74,15 @@ const config: GatsbyConfig = {
     {
       resolve: `gatsby-transformer-remark`,
       options: {
-        commonmark: true,
         footnotes: true,
-        pedantic: true,
         gfm: true,
         plugins: [
+          {
+            resolve: `gatsby-remark-katex`,
+            options: {
+              strict: `ignore`,
+            },
+          },
           {
             resolve: `gatsby-remark-images`,
             options: {
@@ -130,12 +133,7 @@ const config: GatsbyConfig = {
               escapeEntities: {},
             },
           },
-          {
-            resolve: `gatsby-remark-katex`,
-            options: {
-              strict: `ignore`,
-            },
-          },
+
           {
             resolve: 'gatsby-remark-static-images',
           },
@@ -150,7 +148,6 @@ const config: GatsbyConfig = {
               useCustomDivider: '',
             },
           },
-          `gatsby-remark-mathjax`, // Math 처리 관련 플러그인
         ],
       },
     },

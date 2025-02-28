@@ -6,6 +6,10 @@ import Layout from 'components/Layout';
 import Article from 'components/Article';
 
 import blogConfig from '../../blog-config';
+import Header from 'components/Article/Header';
+import Series from 'components/Article/Series';
+import Footer from 'components/Article/Footer';
+import Body from 'components/Article/Body';
 
 const Post = ({ data }) => {
   const post = data.markdownRemark;
@@ -40,19 +44,19 @@ const Post = ({ data }) => {
         url={`${blogConfig.siteUrl}${slug}`}
       />
       <Article>
-        <Article.Header
+        <Header
           emoji={emoji}
           title={title}
           date={date}
-          update={update}
+          // update={update}
           tags={tags}
           minToRead={Math.round(readingTime.minutes)}
         />
         {filteredSeries.length > 0 && (
-          <Article.Series header={series} series={filteredSeries} />
+          <Series header={series} series={filteredSeries} />
         )}
-        <Article.Body html={post.html} />
-        <Article.Footer previous={previous} next={next} />
+        <Body html={post.html} />
+        <Footer previous={previous} next={next} />
       </Article>
     </Layout>
   );
