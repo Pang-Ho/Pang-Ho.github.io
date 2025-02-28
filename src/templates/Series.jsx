@@ -1,29 +1,29 @@
-import React from "react"
-import { graphql } from "gatsby"
+import React from 'react';
+import { graphql } from 'gatsby';
 
-import styled from "styled-components"
+import styled from 'styled-components';
 
-import Layout from "components/Layout"
-import SEO from "components/SEO"
-import PostList from "components/PostList"
-import Divider from "components/Divider"
+import Layout from 'components/Layout';
+import SEO from 'components/SEO';
+import PostList from 'components/PostList';
+import Divider from 'components/Divider';
 
-import { description, siteUrl } from "../../blog-config"
+import blogConfig from '../../blog-config';
 
 const Header = styled.div`
   @media (max-width: 768px) {
     padding: 0px 15px;
   }
-`
+`;
 
 const Title = styled.h1`
   margin-bottom: 15px;
   line-height: 1.2;
   font-size: 32px;
   font-weight: bold;
-  color: ${props => props.theme.colors.text};
+  color: ${(props) => props.theme.colors.text};
   word-break: break-all;
-`
+`;
 
 const Subtitle = styled.h3`
   display: inline-block;
@@ -32,30 +32,31 @@ const Subtitle = styled.h3`
   margin-bottom: 8px;
   font-size: 20px;
   font-weight: bold;
-  background-color: ${props => props.theme.colors.text};
-  color: ${props => props.theme.colors.bodyBackground};
+  background-color: ${(props) => props.theme.colors.text};
+  color: ${(props) => props.theme.colors.bodyBackground};
   letter-spacing: -1px;
-`
+`;
 
 const SeriesInform = styled.div`
   display: flex;
   align-items: center;
   font-size: 16px;
-  color: ${props => props.theme.colors.text};
+  color: ${(props) => props.theme.colors.text};
 
   & > span {
     margin: 0 3px;
   }
-`
+`;
 
 const Date = styled.span`
-  color: ${props => props.theme.colors.tertiaryText};
+  color: ${(props) => props.theme.colors.tertiaryText};
   font-weight: lighter;
-`
+`;
 
 const Series = ({ pageContext, data }) => {
-  const seriesName = pageContext.series
-  const posts = data.posts.nodes
+  const { description, siteUrl } = blogConfig;
+  const seriesName = pageContext.series;
+  const posts = data.posts.nodes;
 
   return (
     <Layout>
@@ -82,10 +83,10 @@ const Series = ({ pageContext, data }) => {
 
       <PostList postList={posts} />
     </Layout>
-  )
-}
+  );
+};
 
-export default Series
+export default Series;
 
 export const pageQuery = graphql`
   query BlogSeriesBySeriesName($series: String) {
@@ -108,4 +109,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

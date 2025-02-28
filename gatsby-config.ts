@@ -1,10 +1,12 @@
-const blogConfig = require("./blog-config")
-const { title, description, author, siteUrl,adsense } = blogConfig
+import { GatsbyConfig } from 'gatsby';
 
-const adsenseClient = adsense == undefined ? "" : adsense.client;
+const blogConfig = require('./blog-config');
+const { title, description, author, siteUrl, adsense } = blogConfig;
 
-module.exports = {
-  pathPrefix: "/gatsby-starter-rundevelrun",
+const adsenseClient = adsense == undefined ? '' : adsense.client;
+
+const config: GatsbyConfig = {
+  pathPrefix: '/gatsby-starter-rundevelrun',
   siteMetadata: {
     title,
     description,
@@ -17,7 +19,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-react-redux`,
       options: {
-        pathToCreateStoreModule: "./src/reducers/createStore",
+        pathToCreateStoreModule: './src/reducers/createStore',
         serialize: {
           space: 0,
           isJSON: true,
@@ -25,13 +27,13 @@ module.exports = {
           ignoreFunction: true,
         },
         cleanupOnClient: true,
-        windowKey: "__PRELOADED_STATE__",
+        windowKey: '__PRELOADED_STATE__',
       },
     },
     {
       resolve: `gatsby-plugin-google-adsense`,
       options: {
-        publisherId: `${adsenseClient}` ,
+        publisherId: `${adsenseClient}`,
       },
     },
     {
@@ -41,11 +43,11 @@ module.exports = {
           `noto sans kr:300,400,500,700,900`,
           `source code pro:700`, // you can also specify font weights and styles
         ],
-        display: "swap",
+        display: 'swap',
       },
     },
-    "gatsby-plugin-styled-components",
-    "gatsby-remark-reading-time",
+    'gatsby-plugin-styled-components',
+    'gatsby-remark-reading-time',
     `gatsby-plugin-react-helmet`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
@@ -81,8 +83,8 @@ module.exports = {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 680,
-              loading: "lazy",
-              wrapperStyle: "margin-bottom: 16px;",
+              loading: 'lazy',
+              wrapperStyle: 'margin-bottom: 16px;',
               quality: 100,
               showCaptions: true,
             },
@@ -100,15 +102,15 @@ module.exports = {
           {
             resolve: `gatsby-remark-prismjs`,
             options: {
-              classPrefix: "language-",
+              classPrefix: 'language-',
               inlineCodeMarker: null,
               aliases: {},
               showLineNumbers: false,
               noInlineHighlight: false,
               languageExtensions: [
                 {
-                  language: "superscript",
-                  extend: "javascript",
+                  language: 'superscript',
+                  extend: 'javascript',
                   definition: {
                     superscript_types: /(SuperType)/,
                   },
@@ -120,8 +122,8 @@ module.exports = {
                 },
               ],
               prompt: {
-                user: "root",
-                host: "localhost",
+                user: 'root',
+                host: 'localhost',
                 global: false,
               },
               escapeEntities: {},
@@ -134,17 +136,17 @@ module.exports = {
             },
           },
           {
-            resolve: "gatsby-remark-static-images",
+            resolve: 'gatsby-remark-static-images',
           },
           {
             resolve: `gatsby-remark-footnotes`,
             options: {
-              footnoteBackRefPreviousElementDisplay: "inline",
-              footnoteBackRefDisplay: "inline",
+              footnoteBackRefPreviousElementDisplay: 'inline',
+              footnoteBackRefDisplay: 'inline',
               footnoteBackRefAnchorStyle: `text-decoration: none;`,
-              footnoteBackRefInnerTextStartPosition: "rear",
+              footnoteBackRefInnerTextStartPosition: 'rear',
               useFootnoteMarkerText: false,
-              useCustomDivider: "",
+              useCustomDivider: '',
             },
           },
         ],
@@ -170,15 +172,15 @@ module.exports = {
         feeds: [
           {
             serialize: ({ query: { site, allMarkdownRemark } }) => {
-              return allMarkdownRemark.edges.map(edge => {
+              return allMarkdownRemark.edges.map((edge) => {
                 return Object.assign({}, edge.node.frontmatter, {
                   description: edge.node.excerpt,
                   date: edge.node.frontmatter.date,
                   url: site.siteMetadata.siteUrl + edge.node.fields.slug,
                   guid: site.siteMetadata.siteUrl + edge.node.fields.slug,
-                  custom_elements: [{ "content:encoded": edge.node.html }],
-                })
-              })
+                  custom_elements: [{ 'content:encoded': edge.node.html }],
+                });
+              });
             },
             query: `
               {
@@ -202,10 +204,12 @@ module.exports = {
             `,
             output: `/rss.xml`,
             title: `RSS Feed of ${title}`,
-            match: "^/blog/",
+            match: '^/blog/',
           },
         ],
       },
     },
   ],
-}
+};
+
+export default config;

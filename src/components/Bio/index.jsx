@@ -1,5 +1,5 @@
-import React from "react"
-import styled from "styled-components"
+import React from 'react';
+import styled from 'styled-components';
 
 import {
   FaGithub,
@@ -8,7 +8,7 @@ import {
   FaTwitter,
   FaLinkedin,
   FaInstagram,
-} from "react-icons/fa"
+} from 'react-icons/fa';
 
 import {
   FaXTwitter,
@@ -17,9 +17,9 @@ import {
   FaBlogger,
   FaRegFileLines,
   FaLink,
-} from "react-icons/fa6"
+} from 'react-icons/fa6';
 
-import { siteUrl, description, author, links } from "../../../blog-config"
+import blogConfig from '../../../blog-config';
 
 const BioWrapper = styled.div`
   display: flex;
@@ -28,12 +28,12 @@ const BioWrapper = styled.div`
   @media (max-width: 768px) {
     padding: 0 15px;
   }
-`
+`;
 
 const profileImageRoot =
-  typeof window !== "undefined" && window.location.host === "localhost:8000"
-    ? "http://localhost:8000"
-    : siteUrl
+  typeof window !== 'undefined' && window.location.host === 'localhost:8000'
+    ? 'http://localhost:8000'
+    : blogConfig.siteUrl;
 
 const Profile = styled.div`
   flex: 0 0 auto;
@@ -44,21 +44,21 @@ const Profile = styled.div`
   background-image: url(${profileImageRoot}/profile.png);
   background-size: cover;
   background-position: center;
-`
+`;
 
 const Author = styled.div`
   margin-bottom: 4.8px;
   font-size: 24px;
   font-weight: 700;
-  color: ${props => props.theme.colors.text};
-`
+  color: ${(props) => props.theme.colors.text};
+`;
 
 const Description = styled.div`
   margin-bottom: 11.2px;
   line-height: 1.5;
   font-size: 16px;
-  color: ${props => props.theme.colors.secondaryText};
-`
+  color: ${(props) => props.theme.colors.secondaryText};
+`;
 
 const LinksWrapper = styled.div`
   & a {
@@ -72,23 +72,23 @@ const LinksWrapper = styled.div`
   }
 
   & svg path {
-    fill: ${props => props.theme.colors.icon};
+    fill: ${(props) => props.theme.colors.icon};
     transition: fill 0.3s;
   }
 
   & a:hover svg path {
-    fill: ${props => props.theme.colors.text};
+    fill: ${(props) => props.theme.colors.text};
   }
-`
+`;
 
 const Link = ({ link, children }) => {
-  if (!link) return null
+  if (!link) return null;
   return (
     <a href={link} target="_blank" rel="noreferrer">
       {children}
     </a>
-  )
-}
+  );
+};
 
 const Bio = () => {
   const {
@@ -104,14 +104,14 @@ const Bio = () => {
     email,
     resume,
     link,
-  } = links
+  } = blogConfig.links;
 
   return (
     <BioWrapper id="bio">
       <Profile />
       <div>
-        <Author>@{author}</Author>
-        <Description>{description}</Description>
+        <Author>@{blogConfig.author}</Author>
+        <Description>{blogConfig.description}</Description>
         <LinksWrapper>
           <Link link={github}>
             <FaGithub />
@@ -152,7 +152,7 @@ const Bio = () => {
         </LinksWrapper>
       </div>
     </BioWrapper>
-  )
-}
+  );
+};
 
-export default Bio
+export default Bio;

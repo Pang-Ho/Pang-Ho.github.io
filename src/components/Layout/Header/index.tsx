@@ -1,35 +1,30 @@
-import React, { useEffect, useState } from "react"
-import styled, { useTheme } from "styled-components"
+import React, { useEffect, useState } from 'react';
+import styled, { useTheme } from 'styled-components';
 
-import { Link } from "gatsby"
+import { Link } from 'gatsby';
 
-import { headerTitle, headerSubTitle, themeColor } from "../../../../blog-config"
+import blogConfig from '../../../../blog-config';
 
-import {
-  FaSun,
-  FaMoon,
-  FaTags,
-  FaListUl, FaSearch
-} from "react-icons/fa"
+import { FaSun, FaMoon, FaTags, FaListUl, FaSearch } from 'react-icons/fa';
 
 const HeaderWrapper = styled.header`
   display: block;
   position: fixed;
-  top: ${props => (props.isHidden ? -60 : 0)}px;
+  top: ${(props) => (props.isHidden ? -60 : 0)}px;
   left: 0;
   right: 0;
   padding: 16px;
-  background-color: ${props => props.theme.colors.headerBackground};
-  box-shadow: 0 0 8px ${props => props.theme.colors.headerShadow};
+  background-color: ${(props) => props.theme.colors.headerBackground};
+  box-shadow: 0 0 8px ${(props) => props.theme.colors.headerShadow};
   backdrop-filter: blur(5px);
-  opacity: ${props => (props.isHidden ? 0 : 1)};
+  opacity: ${(props) => (props.isHidden ? 0 : 1)};
   transition: top 0.5s, opacity 0.5s;
   z-index: 999;
 
   @media (max-width: 768px) {
     padding: 16px 0;
   }
-`
+`;
 
 const Inner = styled.div`
   display: flex;
@@ -39,20 +34,20 @@ const Inner = styled.div`
   @media (max-width: 768px) {
     margin: 0 15px;
   }
-`
+`;
 
 const BlogTitle = styled.span`
   letter-spacing: -1px;
-  font-family: "Source Code Pro", sans-serif;
+  font-family: 'Source Code Pro', sans-serif;
   font-weight: 700;
   font-size: 24px;
-  color: ${props => props.theme.colors.text};
+  color: ${(props) => props.theme.colors.text};
 
   & > a {
     text-decoration: none;
     color: inherit;
   }
-`
+`;
 
 const Menu = styled.div`
   display: flex;
@@ -67,14 +62,14 @@ const Menu = styled.div`
   }
 
   & svg path {
-    fill: ${props => props.theme.colors.icon};
+    fill: ${(props) => props.theme.colors.icon};
     transition: fill 0.3s;
   }
 
   & svg:hover path {
-    fill: ${props => props.theme.colors.text};
+    fill: ${(props) => props.theme.colors.text};
   }
-`
+`;
 
 const ToggleWrapper = styled.div`
   width: 20px;
@@ -82,7 +77,7 @@ const ToggleWrapper = styled.div`
   margin-right: 15px;
   overflow: hidden;
   box-sizing: border-box;
-`
+`;
 
 const IconRail = styled.div`
   position: relative;
@@ -90,7 +85,7 @@ const IconRail = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: 40px;
-  top: ${props => (props.theme === "light" ? "-19px" : "0px")};
+  top: ${(props) => (props.theme === 'light' ? '-19px' : '0px')};
   transition: top 0.4s;
 
   & > svg {
@@ -98,56 +93,56 @@ const IconRail = styled.div`
   }
 
   & > svg:first-child {
-    opacity: ${props => (props.theme === "light" ? 0 : 1)};
+    opacity: ${(props) => (props.theme === 'light' ? 0 : 1)};
   }
 
   & > svg:last-child {
-    opacity: ${props => (props.theme === "dark" ? 0 : 1)};
+    opacity: ${(props) => (props.theme === 'dark' ? 0 : 1)};
   }
-`
+`;
 
 const Header = ({ toggleTheme }) => {
-  const theme = useTheme()
-  const [scrollY, setScrollY] = useState()
-  const [hidden, setHidden] = useState(false)
-
+  const theme = useTheme();
+  const [scrollY, setScrollY] = useState();
+  const [hidden, setHidden] = useState(false);
+  const { headerTitle, headerSubTitle } = blogConfig;
 
   const checkValue = (value) => {
-    return value === null || value === "" || value === undefined;
+    return value === null || value === '' || value === undefined;
   };
 
   const detectScrollDirection = () => {
     if (scrollY >= window.scrollY) {
       // scroll up
-      setHidden(false)
+      setHidden(false);
     } else if (scrollY < window.scrollY && 400 <= window.scrollY) {
       // scroll down
-      setHidden(true)
+      setHidden(true);
     }
 
-    setScrollY(window.scrollY)
-  }
+    setScrollY(window.scrollY);
+  };
 
   useEffect(() => {
-    window.addEventListener("scroll", detectScrollDirection)
+    window.addEventListener('scroll', detectScrollDirection);
 
     return () => {
-      window.removeEventListener("scroll", detectScrollDirection)
-    }
-  }, [scrollY])
+      window.removeEventListener('scroll', detectScrollDirection);
+    };
+  }, [scrollY]);
 
   useEffect(() => {
-    setScrollY(window.scrollY)
-  }, [])
+    setScrollY(window.scrollY);
+  }, []);
   const [showFirstDiv, setShowFirstDiv] = useState(true);
 
   useEffect(() => {
-    if(!checkValue(headerSubTitle)){
+    if (!checkValue(headerSubTitle)) {
       const interval = setInterval(() => {
-        setShowFirstDiv(prev => !prev);
+        setShowFirstDiv((prev) => !prev);
       }, 5000);
 
-    return () => clearInterval(interval);
+      return () => clearInterval(interval);
     }
   }, []);
 
@@ -157,10 +152,10 @@ const Header = ({ toggleTheme }) => {
         <BlogTitle>
           <Link to="/">
             {showFirstDiv ? (
-            <div dangerouslySetInnerHTML={{ __html: headerTitle }}></div>
-              ) : (
-            <div dangerouslySetInnerHTML={{ __html: headerSubTitle }}></div>
-              )}
+              <div dangerouslySetInnerHTML={{ __html: headerTitle }}></div>
+            ) : (
+              <div dangerouslySetInnerHTML={{ __html: headerSubTitle }}></div>
+            )}
           </Link>
         </BlogTitle>
         <Menu>
@@ -182,7 +177,7 @@ const Header = ({ toggleTheme }) => {
         </Menu>
       </Inner>
     </HeaderWrapper>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

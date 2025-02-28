@@ -64,7 +64,7 @@ module.exports = {
 
     // typeScript (https://typescript-eslint.io/rules)
     // 사용자 지정 TypeScript 모듈 및 네임스페이스의 사용은 금지됩니다.
-    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-explicit-any': 'warn',
     // 미사용 변수 정의 금지
     '@typescript-eslint/no-unused-vars': 'warn',
     // 쉽게 유추할 수 있는 명시적 형식은 불필요한 장황함을 추가할 수 있습니다.

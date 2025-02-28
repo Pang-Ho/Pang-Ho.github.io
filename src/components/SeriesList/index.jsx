@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react"
-import styled from "styled-components"
-import _ from "lodash"
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import _ from 'lodash';
 
-import { Link } from "gatsby"
+import { Link } from 'gatsby';
 
-import Title from "components/Title"
-import Divider from "components/Divider"
-import DisplayAds from "../DisplayAd"
+import Title from 'components/Title';
+import Divider from 'components/Divider';
+import DisplayAds from '../DisplayAd';
 
 const SeriesListWrapper = styled.div`
   margin-bottom: 60px;
   @media (max-width: 768px) {
     padding: 0 10px;
   }
-`
+`;
 
 const SeriesWrapper = styled.div`
   position: relative;
@@ -23,54 +23,54 @@ const SeriesWrapper = styled.div`
   @media (max-width: 768px) {
     padding: 0 5px;
   }
-`
+`;
 
 const SeriesInform = styled.div`
   display: flex;
   align-items: center;
-  color: ${props => props.theme.colors.tertiaryText};
+  color: ${(props) => props.theme.colors.tertiaryText};
 
   & > span {
     margin: 0 5px;
   }
-`
+`;
 
 const Date = styled.p`
   font-size: 14.4px;
-`
+`;
 
 const PostCount = styled.p`
   font-size: 14.4px;
-`
+`;
 
 const checkIsScrollAtBottom = () => {
   return (
     document.documentElement.scrollHeight -
       document.documentElement.scrollTop <=
     document.documentElement.clientHeight + 100
-  )
-}
+  );
+};
 
 const SeriesList = ({ seriesList }) => {
-  const [seriesCount, setSeriesCount] = useState(10)
+  const [seriesCount, setSeriesCount] = useState(10);
 
   const handleMoreLoad = _.throttle(() => {
     if (checkIsScrollAtBottom() && seriesCount < seriesList.length) {
-      setTimeout(() => setSeriesCount(seriesCount + 10), 300)
+      setTimeout(() => setSeriesCount(seriesCount + 10), 300);
     }
-  }, 250)
+  }, 250);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleMoreLoad)
+    window.addEventListener('scroll', handleMoreLoad);
 
     return () => {
-      window.removeEventListener("scroll", handleMoreLoad)
-    }
-  }, [seriesCount, seriesList])
+      window.removeEventListener('scroll', handleMoreLoad);
+    };
+  }, [seriesCount, seriesList]);
 
   useEffect(() => {
-    setSeriesCount(10)
-  }, [seriesList])
+    setSeriesCount(10);
+  }, [seriesList]);
 
   return (
     <SeriesListWrapper>
@@ -79,7 +79,7 @@ const SeriesList = ({ seriesList }) => {
           <React.Fragment key={series.name}>
             <SeriesWrapper>
               <Title size="bg">
-                <Link to={`/series/${_.replace(series.name, /\s/g, "-")}`}>
+                <Link to={`/series/${_.replace(series.name, /\s/g, '-')}`}>
                   {series.name}
                 </Link>
               </Title>
@@ -89,19 +89,15 @@ const SeriesList = ({ seriesList }) => {
                 <Date>Last updated on {series.lastUpdated}</Date>
               </SeriesInform>
             </SeriesWrapper>
-            {
-              (i == 0 || i==2) && (
-                <DisplayAds />
-              )
-            }
+            {(i == 0 || i == 2) && <DisplayAds />}
             {seriesCount - 1 !== i && seriesList.length - 1 !== i && (
               <Divider mt="48px" mb="32px" />
             )}
           </React.Fragment>
-        )
+        );
       })}
     </SeriesListWrapper>
-  )
-}
+  );
+};
 
-export default SeriesList
+export default SeriesList;
