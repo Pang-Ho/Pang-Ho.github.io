@@ -90,5 +90,6 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'off',
     'react-hooks/exhaustive-deps': 'off',
     'react/prop-types': 'off',
+    'react/jsx-pascal-case': 'off', // 이 규칙을 비활성화
   },
 };

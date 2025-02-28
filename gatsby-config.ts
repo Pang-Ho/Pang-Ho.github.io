@@ -1,6 +1,7 @@
 import { GatsbyConfig } from 'gatsby';
+import blogConfig from './blog-config';
 
-const blogConfig = require('./blog-config');
+// const blogConfig = require('./blog-config');
 const { title, description, author, siteUrl, adsense } = blogConfig;
 
 const adsenseClient = adsense == undefined ? '' : adsense.client;
@@ -149,6 +150,7 @@ const config: GatsbyConfig = {
               useCustomDivider: '',
             },
           },
+          `gatsby-remark-mathjax`, // Math 처리 관련 플러그인
         ],
       },
     },
