@@ -4,13 +4,7 @@
     "baseUrl": "./src",
     "lib": ["dom", "esnext"],
     "paths": {
-      "*": ["*"],
-      "@components/*": ["components/*"],
-      "@hooks/*": ["hooks/*"],
-      "@assets/*": ["assets/*"],
-      "@styles/*": ["styles/*"],
-      "@utils/*": ["utils/*"],
-      "@pages/*": ["pages/*"]
+      "@/*": ["./src/*"]
     },
     "allowJs": true, // JavaScript 파일을 허용
     "checkJs": true, // JavaScript 파일에 대해 타입 검사 수행

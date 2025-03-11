@@ -45,7 +45,7 @@ const Search = ({ data }) => {
       <SearchWrapper>
         <Badge
           badgeContent={filteredPosts.length}
-          color="warning"
+          color="primary"
           max={99}
           showZero={true}
           sx={{ top: '5px', left: '2px' }}

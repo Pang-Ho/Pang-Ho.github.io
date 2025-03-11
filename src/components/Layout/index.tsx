@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { setLight, setDark } from 'reducers/theme';
+import { useDispatch, useSelector } from 'react-redux';
+import { setDark, setLight } from 'reducers/theme';
 
-import { light, dark } from 'assets/theme';
+import { dark, light } from 'assets/theme';
 
-import GlobalStyles, { GlobalStyleWithFont } from 'components/GlobalStyles';
+import GlobalStyles from 'components/GlobalStyles';
 
-import Header from './Header';
 import Body from './Body';
 import Footer from './Footer';
+import Header from './Header';
 
 const Layout = ({ children }) => {
   const dispatch = useDispatch();
@@ -42,11 +42,10 @@ const Layout = ({ children }) => {
 
   return (
     <ThemeProvider theme={theme === 'light' ? light : dark}>
-      <GlobalStyleWithFont />
+      <GlobalStyles />
       <Header toggleTheme={toggleTheme} />
       <Body>{children}</Body>
       <Footer />
-      <GlobalStyles />
     </ThemeProvider>
   );
 };

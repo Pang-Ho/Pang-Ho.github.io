@@ -18,7 +18,9 @@ const HeaderWrapper = styled.header`
   box-shadow: 0 0 8px ${(props) => props.theme.colors.headerShadow};
   backdrop-filter: blur(5px);
   opacity: ${(props) => (props.isHidden ? 0 : 1)};
-  transition: top 0.5s, opacity 0.5s;
+  transition:
+    top 0.5s,
+    opacity 0.5s;
   z-index: 999;
 
   @media (max-width: 768px) {
@@ -29,7 +31,8 @@ const HeaderWrapper = styled.header`
 const Inner = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 0 64px;
+  margin: 0 auto;
+  max-width: 1020px;
 
   @media (max-width: 768px) {
     margin: 0 15px;
@@ -38,7 +41,7 @@ const Inner = styled.div`
 
 const BlogTitle = styled.span`
   letter-spacing: -1px;
-  font-family: 'Source Code Pro', sans-serif;
+  font-family: 'Montserrat', 'Source Code Pro', sans-serif;
   font-weight: 700;
   font-size: 24px;
   color: ${(props) => props.theme.colors.text};

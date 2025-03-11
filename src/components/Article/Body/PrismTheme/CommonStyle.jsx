@@ -1,13 +1,22 @@
-import { css } from "styled-components"
+import { css } from 'styled-components';
+import D2Coding from './../../../../fonts/D2Coding-Ver1.3.2-20180524.ttf';
 
 const CommonStyle = css`
-  code[class*="language-"],
-  pre[class*="language-"] {
+  @font-face {
+    font-family: 'D2Coding';
+    src: url(${D2Coding}) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  code[class*='language-'],
+  pre[class*='language-'] {
     margin-bottom: 24px;
     font-size: 13.5px;
     color: #ccc;
     background: none;
-    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    font-family:
+      'D2Coding', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     text-align: left;
     white-space: pre;
     word-spacing: normal;
@@ -26,13 +35,13 @@ const CommonStyle = css`
   }
 
   /* Code blocks */
-  pre[class*="language-"] {
+  pre[class*='language-'] {
     padding: 1em;
     overflow: auto;
   }
 
   /* Inline code */
-  :not(pre) > code[class*="language-"] {
+  :not(pre) > code[class*='language-'] {
     padding: 0.1em;
     border-radius: 0.3em;
     white-space: normal;
@@ -49,6 +58,6 @@ const CommonStyle = css`
   .token.entity {
     cursor: help;
   }
-`
+`;
 
-export default CommonStyle
+export default CommonStyle;

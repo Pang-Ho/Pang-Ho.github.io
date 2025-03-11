@@ -1,10 +1,10 @@
 {
-  "name": "gatsby-starter-rundevelrun",
+  "name": "the-great-pang",
   "private": false,
-  "description": "gatsby-starter-rundevelrun is a gatsby theme developed for developers to write tech blogs.",
+  "description": "Pang's tech blog",
   "homepage": "https://pang-ho.github.io",
   "version": "0.0.1",
-  "author": "RUN:DEVEL:RUN",
+  "author": "Pang-Ho",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -79,7 +79,7 @@
     "@types/styled-components": "^5.1.34",
     "eslint-config-react-app": "^7.0.1",
     "gh-pages": "^5.0.0",
-    "prettier": "2.8.8",
+    "prettier": "^3.5.3",
     "typescript": "^5.7.3"
   },
   "keywords": [

@@ -44,7 +44,7 @@ export const light = {
     textFieldBorder: GRAY4,
     textFieldActivatedBorder: GRAY5,
     tableBackground: GRAY1,
-    pointColor: '#ed6c02',
+    pointColor: '#0D6EFD',
   },
 };
 
@@ -83,6 +83,6 @@ export const dark = {
     textFieldBorder: GRAY7,
     textFieldActivatedBorder: GRAY6,
     tableBackground: '#292e33',
-    pointColor: '#ed6c02',
+    pointColor: '#0D6EFD',
   },
 };

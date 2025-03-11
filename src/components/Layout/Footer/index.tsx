@@ -10,7 +10,7 @@ const FooterWrapper = styled.footer`
   text-align: center;
   font-size: 11pt;
   // font-weight: lighter;
-  max-width: 680px;
+  max-width: 1020px;
   margin: 0 auto;
 
   color: ${(props) => props.theme.colors.secondaryText};
@@ -23,8 +23,9 @@ const FooterWrapper = styled.footer`
     float: right;
   }
   a {
-    color: ${(props) => props.theme.colors.primaryText};
-    text-decoration: underline;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
   }
 `;
 

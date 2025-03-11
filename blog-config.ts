@@ -1,11 +1,12 @@
 const blogConfig = {
-  title: '위대한 팡츠비', // SEO Blog title
-  headerTitle: "The great Pang<em style='color:#ed6c02'></em>", // Logo 1
+  title: 'The great Pang', // SEO Blog title
+  headerTitle: 'The great Pang', // Logo 1
   // headerSubTitle: "<em style='color:#ed6c02'>Pang</em>sby", // Logo 2
-  copyright: 'Pang-Ho', // copyright in footer
+  copyright: 'Pang', // copyright in footer
   author: 'Pang', // Your Name
   siteUrl: 'https://pang-ho.github.io/', // Your Site URL
-  description: '블로그는 현재 Gatsby로 전환중입니다.', // Blog description
+  description:
+    '안녕하세요! 왜 이렇게 까지 하지를 담당하는 3년차 프론트엔드 개발자입니다!', // Blog description
   links: {
     github: 'https://github.com/Pang-Ho',
     linkedIn: 'https://linkedin.com',

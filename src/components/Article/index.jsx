@@ -5,7 +5,11 @@ import Series from './Series';
 import Body from './Body';
 import Footer from './Footer';
 
-const Article = styled.article``;
+const Article = styled.article`
+  margin: 0px;
+  padding: 0px;
+  background-color: #fff;
+`;
 
 Article.Header = Header;
 Article.Series = Series;
