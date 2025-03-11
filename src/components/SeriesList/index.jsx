@@ -36,10 +36,12 @@ const SeriesInform = styled.div`
 `;
 
 const Date = styled.p`
+  color: ${(props) => props.theme.colors.tertiaryText};
   font-size: 14.4px;
 `;
 
 const PostCount = styled.p`
+  color: ${(props) => props.theme.colors.text};
   font-size: 14.4px;
 `;
 

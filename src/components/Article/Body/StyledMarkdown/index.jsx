@@ -1,9 +1,9 @@
-import styled from "styled-components"
+import styled from 'styled-components';
 
 const StyledMarkdown = styled.div`
   & {
     font-size: 16px;
-    color: ${props => props.theme.colors.text};
+    color: ${(props) => props.theme.colors.text};
     line-height: 1.73;
     overflow: visible;
   }
@@ -77,7 +77,7 @@ const StyledMarkdown = styled.div`
   }
 
   & .heading-anchor svg {
-    fill: ${props => props.theme.colors.text};
+    fill: ${(props) => props.theme.colors.text};
   }
 
   & strong {
@@ -90,8 +90,12 @@ const StyledMarkdown = styled.div`
 
   & blockquote {
     padding: 18px 24px;
-    border-left: 4px solid ${props => props.theme.colors.blockQuoteBorder};
-    background-color: ${props => props.theme.colors.blockQuoteBackground};
+    border-left: 4px solid ${(props) => props.theme.colors.blockQuoteBorder};
+    background-color: ${(props) => props.theme.colors.blockQuoteBackground};
+
+    & *:first-child {
+      margin-top: 0;
+    }
 
     & *:last-child {
       margin-bottom: 0;
@@ -103,7 +107,8 @@ const StyledMarkdown = styled.div`
   }
 
   & blockquote > p > code.language-text {
-    background-color: ${props => props.theme.colors.inlineCodeBackgroundDarker};
+    background-color: ${(props) =>
+      props.theme.colors.inlineCodeBackgroundDarker};
   }
 
   & table {
@@ -111,13 +116,13 @@ const StyledMarkdown = styled.div`
   }
 
   & th {
-    border-bottom: 2px solid ${props => props.theme.colors.border};
+    border-bottom: 2px solid ${(props) => props.theme.colors.border};
     font-weight: 700;
   }
 
   & td {
-    border-top: 1px solid ${props => props.theme.colors.border};
-    border-bottom: 1px solid ${props => props.theme.colors.border};
+    border-top: 1px solid ${(props) => props.theme.colors.border};
+    border-bottom: 1px solid ${(props) => props.theme.colors.border};
   }
 
   & td,
@@ -130,7 +135,7 @@ const StyledMarkdown = styled.div`
   }
 
   & tr:nth-child(even) {
-    background-color: ${props => props.theme.colors.tableBackground};
+    background-color: ${(props) => props.theme.colors.tableBackground};
   }
 
   & tr:last-child td {
@@ -143,9 +148,9 @@ const StyledMarkdown = styled.div`
     top: -1px;
     padding: 3px 5px 3px 5px;
     font-size: 13px;
-    background-color: ${props => props.theme.colors.inlineCodeBackground};
+    background-color: ${(props) => props.theme.colors.inlineCodeBackground};
     font-weight: bold;
-    color: ${props => props.theme.colors.text};
+    color: ${(props) => props.theme.colors.text};
   }
 
   & h2 > code.language-text,
@@ -155,7 +160,8 @@ const StyledMarkdown = styled.div`
   }
 
   & tr:nth-child(even) code.language-text {
-    background-color: ${props => props.theme.colors.inlineCodeBackgroundDarker};
+    background-color: ${(props) =>
+      props.theme.colors.inlineCodeBackgroundDarker};
   }
 
   & > p + ul,
@@ -201,11 +207,11 @@ const StyledMarkdown = styled.div`
       height: 10px;
     }
     ::-webkit-scrollbar-track {
-      background: ${props => props.theme.colors.scrollTrack};
+      background: ${(props) => props.theme.colors.scrollTrack};
     }
 
     ::-webkit-scrollbar-thumb {
-      background: ${props => props.theme.colors.scrollHandle};
+      background: ${(props) => props.theme.colors.scrollHandle};
     }
   }
 
@@ -226,17 +232,17 @@ const StyledMarkdown = styled.div`
 
   & hr {
     border: none;
-    border-bottom: 1px solid ${props => props.theme.colors.border};
+    border-bottom: 1px solid ${(props) => props.theme.colors.border};
   }
 
   & a {
     padding: 1.6px 0;
-    color: ${props => props.theme.colors.text};
+    color: ${(props) => props.theme.colors.text};
   }
 
   & a:hover:not(.heading-anchor) {
-    background-color: ${props => props.theme.colors.text};
-    color: ${props => props.theme.colors.hoveredLinkText};
+    background-color: ${(props) => props.theme.colors.text};
+    color: ${(props) => props.theme.colors.hoveredLinkText};
   }
 
   & sup {
@@ -252,9 +258,9 @@ const StyledMarkdown = styled.div`
   & .footnotes {
     margin-top: 60px;
     padding-top: 20px;
-    border-top: 1px solid ${props => props.theme.colors.border};
+    border-top: 1px solid ${(props) => props.theme.colors.border};
     font-size: 14px;
   }
-`
+`;
 
-export default StyledMarkdown
+export default StyledMarkdown;

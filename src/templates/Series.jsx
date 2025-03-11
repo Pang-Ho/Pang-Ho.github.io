@@ -50,7 +50,6 @@ const SeriesInform = styled.div`
 
 const Date = styled.span`
   color: ${(props) => props.theme.colors.tertiaryText};
-  font-weight: lighter;
 `;
 
 const Series = ({ pageContext, data }) => {

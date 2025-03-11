@@ -23,7 +23,7 @@ const FooterWrapper = styled.footer`
     float: right;
   }
   a {
-    color: black;
+    color: ${(props) => props.theme.colors.text};
     font-weight: bold;
     text-decoration: none;
   }

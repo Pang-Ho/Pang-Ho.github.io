@@ -8,7 +8,6 @@ import Footer from './Footer';
 const Article = styled.article`
   margin: 0px;
   padding: 0px;
-  background-color: #fff;
 `;
 
 Article.Header = Header;

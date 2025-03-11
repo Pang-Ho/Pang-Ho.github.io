@@ -1,6 +1,6 @@
 const blogConfig = {
-  title: 'The great Pang', // SEO Blog title
-  headerTitle: 'The great Pang', // Logo 1
+  title: 'THE GREAT PANG', // SEO Blog title
+  headerTitle: 'THE GREAT PANG', // Logo 1
   // headerSubTitle: "<em style='color:#ed6c02'>Pang</em>sby", // Logo 2
   copyright: 'Pang', // copyright in footer
   author: 'Pang', // Your Name

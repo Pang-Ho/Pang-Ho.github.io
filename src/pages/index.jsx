@@ -16,7 +16,7 @@ import Bio from '../components/Bio';
 const SearchWrapper = styled.div`
   margin-top: 20px;
   @media (max-width: 768px) {
-    padding: 0 15px;
+    padding: 0 13px;
   }
 `;
 
@@ -48,10 +48,10 @@ const Search = ({ data }) => {
       <SearchWrapper>
         <Badge
           badgeContent={filteredPosts.length}
-          color="warning"
+          color="info"
           max={99}
           showZero={true}
-          sx={{ top: '5px', left: '2px' }}
+          sx={{ top: '12px', left: '2px' }}
         ></Badge>
         <TextField
           onChange={(e) => setQuery(e.target.value)}
