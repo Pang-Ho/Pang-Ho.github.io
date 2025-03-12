@@ -2,9 +2,8 @@
 emoji: '🚀'
 title: 'React Folder'
 date: 2025-03-11 00:00:00
-update: 2025-03-11 00:00:00
+update: 2025-03-12 16:30:00
 tags:
-  - pang
   - react
 series: 'React'
 ---
@@ -68,7 +67,7 @@ src/
 └── assets/           # 이미지, 폰트, 아이콘 등 정적 리소스
 ```
 
-- Chat GPT에 `src` 구조를 위 처럼 확장하는 것을 추천한다. 페이지 단위로 파일을 만들고, 재사용이 가능한 컴포넌트는 따로 관리하며
+- Chat GPT는 `src` 구조를 위 처럼 확장하는 것을 추천한다. 페이지 단위로 파일을 만들고, 재사용이 가능한 컴포넌트는 따로 관리하며
   커스텀 훅도 따로 관리한다. 실제로 파일들을 넣어보자
 
 ```
@@ -115,17 +114,17 @@ src/
 │       └── board/                  # URL 경로
 │            ├── components/        # 종속된 UI 컴포넌트
 │            │    ├── hooks/        # 종속된 커스텀 훅
-│		     │    │    └── use-board-header.ts
-│		     │    │
-│		     │    └── board-header.tsx
+│		         │    │    └── use-board-header.ts
+│		         │    │
+│		         │    └── board-header.tsx
 │            ├── hooks/             # 종속된 커스텀 훅
-│		     │    └── use-board.ts
+│		         │    └── use-board.ts
 │            ├── schema/            # hook-form 스키마
-│		     │    └── board-schema.ts
+│		         │    └── board-schema.ts
 │            ├── api/               # API 호출
-│		     │    └── board-api.ts
+│		         │    └── board-api.ts
 │            ├── models/            # 타입
-│		     │    └── board.ts
+│		         │    └── board.ts
 │            └── board-page.tsx
 │
 ├── hooks/            # 전역으로 사용하는 사용자 정의 훅
@@ -214,7 +213,14 @@ src/
 
 > bulletproof 는 안정적인 코드를 뜻한다.
 
-![bulletproof-react.png](bulletproof-react.png)
+```
+src/
+├── features
+│       └── comments/
+│            └── api/
+│		         └── components/
+└──
+```
 
 `feature` 폴더 하나를 기준으로 보면, 내가 사용하는 폴더구조와 비슷하게 한 곳에서 관련된 소스들을 관리한다.
 하지만 `FSD`와 비슷하게 `app` 폴더에서 어플리케이션 구조를 만든다. `pages` 폴더 없이 `app`폴더에서 모두 관리한다.
@@ -239,4 +245,10 @@ src/features/awesome-feature
 
 ## 정리
 
-`FSD`, `bulletproof-react repository`를 구경해봤다. 현재 상황에서 어떤 폴더 구조를 따라갈지 눈에 보이기도하고,
+`FSD`, `bulletproof-react repository`를 구경해봤다. `feature` 폴더에 기능 기준으로 컴포넌트를 만들고, 필요한 `api` 호출이나 종속된 컴포넌트의 경우 같은 공간에 만들어 소스 확인할 때 이리저리 움직이지 않게 만드는 모습을 보인다. `feature` 방식을 이용해볼까 생각중이다. 물론 마이그레이션까지 하면서 진행할 생각은 없다.
+
+프로젝트가 진행되면서 공통적으로 만들어야하는 기능이 많아지는 경우 `src/component` 폴더가 매우 커졌던 경험이 있다. 즐겨찾기가 되는 버튼형 아이콘을 만들 때 기능에 치중한 컴포넌트이니까 `src/component/feature` 폴더를 만들거나, `src/component/feature` 폴더를 만들어서 한 곳에 만들고, `src/component/ui` 폴더에는 기능이 없는 컴포넌트는 어떤가 싶기도 하다.
+
+> 운영하는 시스템에서 조금 신경쓰일정도로 느린 화면들이 있는데, `SSR`을 사용하면 조금 나아질까 싶어 Nextjs를 공부하고있다.
+>
+> 사용하던 폴더구조를 보니 Nextjs의 페이지 라우팅 구조와 비슷한 모습을 보여 놀랐다.

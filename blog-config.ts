@@ -9,7 +9,7 @@ const blogConfig = {
     '안녕하세요! 왜 이렇게 까지 하지를 담당하는 3년차 프론트엔드 개발자입니다!', // Blog description
   links: {
     github: 'https://github.com/Pang-Ho',
-    linkedIn: 'https://linkedin.com',
+    // linkedIn: 'https://linkedin.com',
     // facebook: "https://www.facebook.com",
     // twitter: "https://twitter.com",
     // x: "https://x.com",
@@ -21,15 +21,15 @@ const blogConfig = {
     // link: "https://6developer.com",
   },
   giscus: {
-    repo: 'rundevelrun/gatsby-starter-rundevelrun',
-    repoId: 'R_kgDONrv7CA',
+    repo: 'Pang-Ho/Pang-Ho.github.io',
+    repoId: 'R_kgDONTJBcg',
     category: 'Announcements',
-    categoryId: 'DIC_kwDONrv7CM4CmJbt',
+    categoryId: 'DIC_kwDONTJBcs4Ckkmd',
     mapping: 'pathname',
     strict: '0',
     reactionsEnabled: '1',
-    inputPosition: 'bottom',
-    lang: 'en',
+    inputPosition: 'top',
+    lang: 'ko',
   },
   adsense: {
     client: '',
