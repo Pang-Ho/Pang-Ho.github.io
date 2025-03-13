@@ -89,7 +89,7 @@ const config: GatsbyConfig = {
           {
             resolve: `gatsby-remark-images`,
             options: {
-              maxWidth: 680,
+              maxWidth: 960,
               loading: 'lazy',
               wrapperStyle: 'margin-bottom: 16px;',
               quality: 100,

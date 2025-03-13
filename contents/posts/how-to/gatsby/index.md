@@ -2,7 +2,7 @@
 emoji: '✋'
 title: 'Gatsby 블로그 시작하기'
 date: 2025-01-18 13:55:00
-update: 2025-01-18 13:55:00
+update: 2025-03-12 16:00:00
 tags:
   - gatsby
 series: 'gatsby'
@@ -25,8 +25,11 @@ series: 'gatsby'
    yarn global add gatsby-cli
    ```
 4. Gatsby 블로그 생성
+
    ```shell
-   gatsby new your-blog-name https://github.com/rundevelrun/gatsby-starter-rundevelrun.git
+   gatsby new [your-blog-name] [사용하고 싶은 Gatsby 템플릿]
+
+   예시 : gatsby new your-blog-name https://github.com/rundevelrun/gatsby-starter-rundevelrun.git
    ```
 
 ## 🚀 개발 환경 구동
@@ -34,11 +37,18 @@ series: 'gatsby'
 아래 과정을 거친 후 `http://localhost:8000`으로 접속
 
 1. 의존성 패키지 설치
+
    ```shell
    cd your-blog-name
    yarn install
    ```
+
 2. 구동
+
+   구동 방법은 사용하는 Gatsby 템플릿마다 `package.json` 에 작성된 yarn 명령어는 다르겠지만, 대부분 동일하게 `gatsby develop` 명령어를 사용하시면 됩니다.
+
+   **이후 내용부터는 `https://github.com/rundevelrun/gatsby-starter-rundevelrun.git` 템플릿을 기준으로 설명서가 작성되었습니다.**
+
    ```shell
    yarn develop
    ```
