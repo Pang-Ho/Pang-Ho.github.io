@@ -120,4 +120,4 @@ module.exports = {
 
 ## 👍 댓글 창 확인
 
-![giscus 댓글 스크린샷](./images/how-to/giscus-screenshot.png)
+![giscus 댓글 스크린샷](./markdown-pages/images/how-to/giscus-screenshot.png)

@@ -25,6 +25,7 @@ export const createPages: GatsbyNode['createPages'] = async ({
           fields {
             slug
           }
+          fileAbsolutePath
           frontmatter {
             series
           }
@@ -100,8 +101,10 @@ export const onCreateNode: GatsbyNode['onCreateNode'] = ({
 
   if (node.internal.type === `MarkdownRemark`) {
     const slug = createFilePath({ node, getNode });
-    const newSlug = `/${slug.split('/').reverse()[1]}/`;
 
+    const newSlug = slug.replace(/^\/posts/, '');
+    // const newSlug = `/${slug.split('/').reverse()[1]}/`;
+    console.log(newSlug);
     createNodeField({
       node,
       name: `slug`,
