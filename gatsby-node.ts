@@ -102,13 +102,14 @@ export const onCreateNode: GatsbyNode['onCreateNode'] = ({
   if (node.internal.type === `MarkdownRemark`) {
     const slug = createFilePath({ node, getNode });
 
-    const newSlug = slug.replace(/^\/posts/, '');
+    // contents 하위 메뉴 경로로 URL PATH 설정
     // const newSlug = `/${slug.split('/').reverse()[1]}/`;
-    console.log(newSlug);
+    // const newSlug = slug.replace(/^\/posts/, '');
+
     createNodeField({
       node,
       name: `slug`,
-      value: newSlug,
+      value: slug,
     });
   }
 };
