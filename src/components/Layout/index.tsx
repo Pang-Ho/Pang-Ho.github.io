@@ -6,11 +6,10 @@ import { setDark, setLight } from 'reducers/theme';
 
 import { dark, light } from 'assets/theme';
 
-import GlobalStyles from 'components/GlobalStyles';
-
 import Body from './Body';
 import Footer from './Footer';
 import Header from './Header';
+import GlobalStyleWrapper from 'components/GlobalStyles';
 
 const Layout = ({ children }) => {
   const dispatch = useDispatch();
@@ -42,7 +41,7 @@ const Layout = ({ children }) => {
 
   return (
     <ThemeProvider theme={theme === 'light' ? light : dark}>
-      <GlobalStyles />
+      <GlobalStyleWrapper />
       <Header toggleTheme={toggleTheme} />
       <Body>{children}</Body>
       <Footer />
