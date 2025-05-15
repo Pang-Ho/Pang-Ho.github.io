@@ -1,6 +1,6 @@
 ---
 emoji: '🚀'
-title: 'SpringBoot, React, S3 Presigned URL을 이용하여 파일 업로드 속도를 개선해보자'
+title: 'SpringBoot, React, S3 Presigned URL, Multipart File을 이용해 파일 업로드 속도를 개선해보자'
 date: 2025-04-18 00:00:00
 update: 2025-04-18 00:00:00
 tags:
@@ -14,13 +14,18 @@ series: 'SpringBoot'
 ## 🧪 테스트 환경
 
 > React v18
+>
 > AWS SDK for Java1.x
+>
+> 백엔드 : AWS EKS 환경
+>
+> 프론트 : AWS S3 Nginx 환경
 
 ## 배경
 
-기본적으로 업로드 평균 속도는 5MB/s 라고한다. 대용량까지 풀어주지 않았기 때문에 50MB 안에서만 속도가 잘 나오면 된다.
+기본적으로 업로드 평균 속도는 5MB/s 라고한다.
 
-그래서 파일을 Presigned URL에 통째로 올리는 방식으로 개발해두고 50MB 파일이 약 10초 정도 걸렸지만 대용량 파일을 올리는 사람이 없었기 때문에 문제가 없었었다.
+파일을 Presigned URL에 통째로 올리는 방식으로 개발해두고 50MB 파일이 약 10초 정도 걸렸었다.
 
 문제가 생겼다. 고객쪽 네트워크 망이 상태가 안좋은지 업로드 속도가 심각하게 느려졌다.
 
@@ -29,23 +34,34 @@ series: 'SpringBoot'
 ## 목표
 
 1. Presigned URL 속도 체크
-2. Presigned URL multipart로 파일을 쪼개서 업로드
-3. 서버를 통한 S3 업로드 속도 체크
-4. 서버에 multipart로 파일을 쪼개서 업로드
+2. 4가지 방법 구현 후 속도 비교
+   1. Presigned URL을 이용한 파일 업로드
+   2. Presigned URL을 이용한 Multipart File 업로드
+   3. 서버에 파일 업로드 하여 S3에 업로드
+   4. 서버에 Multipart File을 업로드하여 S3에 업로드
+3. 네트워크 개선 후 파일 업로드 속도 비교
 
 ## 구현
 
 ### 구현하기 앞서 업로드 속도 체크
 
-1. 브라우저에서 S3 직접 파일 전송
-   네트워크 망 개선 전 : 50MB / 14분
-
-2. 브라우저에서 파일을 잘라 S3에 직접 파일 전송
-   네트워크 망 개선 전 : 50MB / 2분
+- 브라우저에서 S3 직접 파일 전송
+  - 기존 50MB / 10초 => 네트워크 망 상태가 안좋아진 상황 : 50MB / 14분
 
 ### 1. Presigned URL multipart 파일 업로드
 
+#### React
+
+동작 방식
+
+1. 프론트에서 올릴 파일을 자른다.(Multipart로 파일을 자른다.)
+2. 프론트에서 올릴 파일 정보를 백엔드로 송신하여 백엔드에서 Presigned URL을 받아온다.
+   - 프론트에서 S3로부터 Presigned URL을 받지 않고 백엔드에서 받도록 하였다.
+3. Multipart File을 Presigned URL을 이용해 S3에 업로드한다.
+4. Multipart File이 모두 업로드되면, S3에서 합칠 수 있도록 백엔드에 요청한다.
+
 ```javascript
+// Multipart File로 파일 업로드 로직
 export const FileUploader = forwardRef(props, ref) => {
     const [files, setFiles] = useState<File[]>([]);
 
@@ -62,7 +78,7 @@ export const FileUploader = forwardRef(props, ref) => {
 
     // 1. presigned Url로 파일을 올리는 로직
     async function processUploadMultipartFilesWithPresignedUrl(files: File[]) {
-      // 각 part마다 크기 설정 AWS S3는 최소 5MB
+      // 파일을 얼마 단위로 자를지 설정한다. AWS S3에서는 5MB를 최소 크기로 잡는다.
       const chunkSize = 10 * 1024 * 1024;
       const partCount = Math.ceil(file.size / chunkSize);
 
@@ -114,7 +130,7 @@ export const FileUploader = forwardRef(props, ref) => {
       const partCount = Math.ceil(file.size / chunkSize);
 
       try {
-        // 1. preSignedURL List 가져오기
+        // 1. 프론트에서 올릴 파일 정보를 백엔드로 송신하여 백엔드에서 Presigned URL을 받아온다.
         const FileUploadStartResponse = await axios.get("/api/upload/presigned-url/start", {
           params: {
             fileSize: String(file.size),
@@ -127,7 +143,7 @@ export const FileUploader = forwardRef(props, ref) => {
         const { uploadId, preSignedUrlList, key } = FileUploadStartResponse;
         // const parts: { partNumber: number; eTag: string }[] = [];
 
-        // 2. 각 파트 업로드
+        // 2. 자른 파일(Multipart File)을 Presigned URL에 올린다.
         const uploadPart = async (i: number) => {
           const start = i * chunkSize;
           const end = Math.min(file.size, start + chunkSize);
@@ -139,7 +155,10 @@ export const FileUploader = forwardRef(props, ref) => {
             },
           });
 
-          // 2-1. 파트 업로드시 S3 Response 값으로 eTag 값을 보내주는데, 가지고 있어야한다. eTag값은 preSigneUrl에 multipart file을 업로드하면, response header에 값이 들어옵니다. 이 값을 제대로 받으려면, s3 header cors 설정이 필요합니다.
+          /*
+              2-1. 파트 업로드시 S3에서 Response Header에 eTag 값을 보내주는데, 가지고 있어야한다.
+              이 값을 제대로 받으려면, s3 header cors 설정이 필요하다.
+           */
           const eTag = res.headers.etag || res.headers.ETag || res.headers.Etag;
           return { partNumber: i + 1, eTag: eTag.replace(/"/g, '') };
         };
@@ -159,6 +178,13 @@ export const FileUploader = forwardRef(props, ref) => {
       }
     };
 ```
+
+#### SpringBoot
+
+동작방식
+
+1. /api/upload/presigned-url/start 에서는 파일 정보를 받아 Presigned URL을 만들어 보내준다.
+2. /api/upload/presigned-url/complete 에서는 Multipart File을 S3에서 하나의 파일로 합쳐지도록 S3 메서드를 호출한다.
 
 ```java
   @GetMapping(value = "/api/upload/presigned-url/start")
@@ -225,7 +251,8 @@ export const FileUploader = forwardRef(props, ref) => {
 
   @PostMapping(value = "/api/upload/presigned-url/complete")
   public ResponseEntity<String> completeMultipartUpload(
-          @RequestBody FileUploadCompleteRequest fileUploadCompleteRequest //uploadId, key, parts 세개를 받고있고, parts는 partNumber와 eTag를 받고있습니다.
+          @RequestBody FileUploadCompleteRequest fileUploadCompleteRequest
+          //uploadId, key, parts 세개를 받고있고, parts는 partNumber와 eTag를 받고있습니다.
   ) {
       // AWS SDK
       AmazonS3 s3Client = s3Service.getS3Client();
@@ -256,7 +283,7 @@ export const FileUploader = forwardRef(props, ref) => {
   @Builder
   @NoArgsConstructor
   @AllArgsConstructor
-  public class FileUploadCompleteRequestVO {
+  public class FileUploadCompleteRequest {
           @Schema(description = "uploadId", name="uploadId")
           private String uploadId;
 
@@ -264,14 +291,14 @@ export const FileUploader = forwardRef(props, ref) => {
           private String fileSavePath;
 
           @Schema(description = "parts", name="parts")
-          private List<UploadedPartVO> parts;
+          private List<UploadedPart> parts;
   }
 
   @Data
   @Builder
   @NoArgsConstructor
   @AllArgsConstructor
-  public class UploadedPartVO {
+  public class UploadedPart {
           @NotBlank
           @Schema(description = "partNumber", name="partNumber")
           private int partNumber;
@@ -283,16 +310,34 @@ export const FileUploader = forwardRef(props, ref) => {
 ```
 
 > 질문
-> Q1. Presigned URL API가 왜 두 개 인가요?
+>
+> Q1. Presigned URL에서 사용하는 API가 왜 두 개 인가요?
+>
 > A1. '/api/upload/presigned-url/start' start api에서는 presigned-url을 프론트로 보내는 역할을 하고, '/api/upload/presigned-url/complete' complete api에서는 presigned url에 올린 multipart 파일이 모두 올라간 경우 하나의 파일로 합치는 과정을 진행합니다.
+>
 > Q2. uploadId, partNumber, etag 얘네들은 뭐죠??
-> A2.
-> Q3. eTag가 undefined 오류가 떠요!!!
-> A3. multipart file을 업로드시 S3쪽에서 response header에 eTag값을 줍니다. 이 경우 제대로 받으려면 S3 CORS 설정을 해야합니다. AWS 웹 콘솔에 들어가서 권한 탭을 들어가 CORS를 수정하는 부분이 있는데, 기본적으로 "AllowedHeaders": [ "*" ], .... 등이 들어가 있을거예요. 이곳에서 편집을 이용해 "ExposeHeaders": ["ETag"] 내용을 넣어주면 됩니다.
-> Q4. VO 안에 eTag 위에 있는 JsonProperty 어노테이션은 무엇인가요?
-> A4. 자바 빈 규칙으로 인해, 두번 째 글자가 대문자로 오는 경우 제대로 인식하지 못합니다. 그래서 etag로 데이터가 들어온것으로 판단해, 프론트에서 eTag로 데이터를 보낸다해도, 서버에서는 인식하지 못합니다. 그래서 eTag라는 '이름의 데이터다!' 라고 표현하는 어노테이션입니다.
+>
+> A2. uploadId는 S3에 올린 파일 정보의 고유 번호, partNumber는 S3에 올린 Multipart File의 인덱스번호, eTag는 S3에서 보내준 Multipart File의 고유 번호입니다.
+>
+> Q3. 프론트에서 eTag가 undefined 오류가 떠요!!!
+>
+> A3. multipart file을 업로드시 S3쪽에서 response header에 eTag값을 줍니다.
+> 이 경우 제대로 받으려면 S3 CORS 설정을 해야합니다. AWS 웹 콘솔에 들어가서 권한 탭을 들어가 CORS를 수정하는 부분이 있는데, 기본적으로 "AllowedHeaders": [ "*" ], .... 등이 들어가 있을거예요. 이곳에서 편집을 이용해 "ExposeHeaders": ["ETag"] 내용을 넣어주면 됩니다.
+>
+> Q4. 백엔드 UploadedPart DTO안에 eTag 위에 있는 JsonProperty 어노테이션은 무엇인가요?
+>
+> A4. 자바 빈 규칙으로 인해, 두 번 째 글자가 대문자로 오는 경우 제대로 인식하지 못합니다. 그래서 etag로 데이터가 들어온것으로 판단해, 프론트에서 eTag로 데이터를 보낸다해도, 서버에서는 인식하지 못합니다. 그래서 eTag라는 '이름의 데이터다!' 라고 표현하는 어노테이션입니다.
 
 ### 2. 서버에 스트리밍 방식으로 multipartFile 올리는 로직
+
+#### React
+
+동작방식
+
+1. 프론트에서 파일 정보를 보내 백엔드에서 Upload Id를 받아옵니다.
+2. 프론트에서 파일을 잘라 Multipart File을 백엔드에 스트리밍 형태로 올립니다.
+3. 백엔드에서 받은 Multipart File을 S3에 업로드합니다.
+4. S3에 다 올라가면, Multipart File을 합칠 수 있도록 프론트에서 백엔드로 요청합니다.
 
 ```javascript
 export const FileUploader = forwardRef(props, ref) => {
@@ -404,6 +449,8 @@ export const FileUploader = forwardRef(props, ref) => {
 ```
 
 ```java
+
+  //Upload Id 요청 API
   @GetMapping(value = "/api/upload/server/start")
   public ResponseEntity<FileUploadStartResponse> startMultipartUploadWithStreaming(
           @RequestParam("fileName") @NotBlank String fileName
@@ -443,7 +490,7 @@ export const FileUploader = forwardRef(props, ref) => {
   @Builder
   @NoArgsConstructor
   @AllArgsConstructor
-  public class UploadedPartVO {
+  public class UploadedPart {
           @NotBlank
           @Schema(description = "partNumber", name="partNumber")
           private int partNumber;
@@ -452,7 +499,7 @@ export const FileUploader = forwardRef(props, ref) => {
           private String eTag;
   }
 
-
+  // Multipart File 업로드 API
   @PostMapping(value = "/api/upload/server/start", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UploadedPart> uploadMultipartFilesWithStreaming(
             @RequestParam(name = "chunk") MultipartFile chunk,
@@ -479,16 +526,18 @@ export const FileUploader = forwardRef(props, ref) => {
 
         UploadPartResult partResult = s3Client.uploadPart(partRequest);
 
-        return ResponseEntity.ok(UploadedPartVO.builder()
+        return ResponseEntity.ok(UploadedPart.builder()
                 .eTag(partResult.getETag())
                 .partNumber(partNumber)
                 .build()
               );
   }
 
+  // Multipart File을 하나의 파일로 합치는 API
   @PostMapping(value = "/api/upload/server/complete")
   public ResponseEntity<String> completeMultipartUpload(
-          @RequestBody FileUploadCompleteRequest fileUploadCompleteRequest //uploadId, key, parts 세개를 받고있고, parts는 partNumber와 eTag를 받고있습니다.
+          @RequestBody FileUploadCompleteRequest fileUploadCompleteRequest
+          //uploadId, key, parts 세개를 받고있고, parts는 partNumber와 eTag를 받고있습니다.
   ) {
       // AWS SDK
       AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
@@ -520,7 +569,7 @@ export const FileUploader = forwardRef(props, ref) => {
   @Builder
   @NoArgsConstructor
   @AllArgsConstructor
-  public class FileUploadCompleteRequestVO {
+  public class FileUploadCompleteRequest {
           @Schema(description = "uploadId", name="uploadId")
           private String uploadId;
 
@@ -528,53 +577,57 @@ export const FileUploader = forwardRef(props, ref) => {
           private String fileSavePath;
 
           @Schema(description = "parts", name="parts")
-          private List<UploadedPartVO> parts;
+          private List<UploadedPart> parts;
   }
 
 ```
 
-### 구현 후 업로드 속도 체크
+### 구현 후 업로드 속도 비교
 
-1. 브라우저에서 S3 직접 파일 전송
-   네트워크 망 개선 전 : 50MB / 14분
+1. Presigned URL 파일 업로드
 
-2. 브라우저에서 파일을 잘라 S3에 직접 파일 전송
-   네트워크 망 개선 전 : 50MB / 2분
+   1. 단일
+      1. 기존 : 50MB / 10초 => 네트워크 망 개선 전 : 50MB / 14분
+   2. Multipart File
+      1. 네트워크 망 개선 전 : 50MB / 2분
 
-3. 서버에 파일을 올려서 S3에 업로드
-   50MB / 18초
-   100MB / 30초
-
-4. 서버에 파일을 잘라 올려 S3에 업로드
-   50MB / 18초
-   100MB / 38초
+2. 서버에 파일을 올려서 S3에 업로드
+   1. 단일
+      1. 네트워크 망 개선 전 : 50MB / 18초, 100MB / 30초
+   2. Multipart File
+      1. 네트워크 망 개선 전 : 50MB / 18초, 100MB / 38초
 
 결과
 
-1. 네트워크 망이 좋지 않은 경우 서버에 파일을 올리는게 획기적으로 빨랐다. 왜지...?
-2. 서버에 multipart file을 업로드해서 S3에 업로드 하는 경우는 더 느리다.
+1. 네트워크 망이 좋지 않은 경우 서버에 파일을 올리는게 획기적으로 빨랐다.
+2. 서버에 파일을 업로드하여 S3에 올리는 경우, 오히려 Multipart File을 이용하면 더 느리다.
 
 ### 이후 네트워크 망 속도 개선 된 후 업로드 속도
 
-1. 브라우저에서 S3 직접 파일 전송
-   네트워크 망 개선 후 : 50MB / 14초, 100MB / 30초
+1. Presigned URL 파일 업로드
 
-2. 브라우저에서 파일을 잘라 S3에 직접 파일 전송
-   네트워크 망 개선 후 : 50MB / 4초, 100MB / 6초
+   1. 단일
+      1. 네트워크 망 개선 전 : 50MB / 14분
+      2. 네트워크 망 개선 후 : 50MB / 14초, 100MB / 30초
+   2. Multipart File
+      1. 네트워크 망 개선 전 : 50MB / 2분
+      2. 네트워크 망 개선 후 : 50MB / 4초, 100MB / 6초
 
-3. 서버에 파일을 올려서 S3에 업로드
-   50MB / 10초
-   100MB / 17초
+2. 서버에 파일을 올려서 S3에 업로드
+   1. 단일
+      1. 네트워크 망 개선 전 : 50MB / 18초, 100MB / 30초
+      2. 네트워크 망 개선 후 : 50MB / 18초, 100MB / 30초
+   2. Multipart File
+      1. 네트워크 망 개선 전 : 50MB / 18초, 100MB / 38초
+      2. 네트워크 망 개선 후 : 50MB / 18초, 100MB / 38초
 
-4. 서버에 파일을 잘라 올려 S3에 업로드
-   50MB / 10초
-   100MB / 18초
+## 결과
 
-결과
+1. 네트워크 망 개선 전에는 클라이언트에서 S3 접근 속도가 비정상적으로 느렸다. 그래서 Multipart로 파일을 업로드 시켜도 엄청나게 속도가 개선이 되었지만, 아직도 느렸다.
+2. 서버로 파일을 올리는건 네트워크 망이 느려진 곳에 거치지 않는 것으로 판단된다. 그래서 네트워크 망이 개선되기 전까지 서버에 파일을 업로드 시켜서 S3에 넣을 수 있도록 하였다.
+3. 무조건 Multipart File이 좋진 않았다. 서버에 Multipart File을 올리는 경우 단일로 올리는 것보다 속도가 느렸다.
 
-1. 속도가 전체적으로 개선 되었다. 내 예상보다는 느리다고 생각되지만, 네트워크 속도가 개선되니 확실히 presigne url이 빨랐다.
-
-## 회고
+## 고촬
 
 1. 네트워크 망이 안좋았는데 왜 서버로 파일을 올리는건 빨랐을까?
 
@@ -584,4 +637,6 @@ export const FileUploader = forwardRef(props, ref) => {
 
    아마 내 예상으로 네트워크 이슈가 AWS 서버까지가 아니고 AWS S3 서버까지에서 이슈가 있었던 것으로 판단된다. 그래서 클라이언트에 AWS 서버로 파일이 올라가는건 정상적인 속도가 나왔고, AWS 서버와 S3 서버 끼리도 속도가 빨랐던것 같다.
 
-2. 프론트와 서버가 모두 AWS에 있는 상태지만, 클라이언트에서 서버로 파일을 올리기 때문에 서버에 파일을 올리는건 느릴거라 판단했으나, 파일을 업로드하는건 이상하게 빨라졌다. 그러나, 서버에 올리는것이 속도가 아직도 느린편이라... 파일 크기를 제한해서 한동안은 작은 크기의 파일만 올리도록 하였다.
+2. Multipart File로 파일을 올리는 경우 속도가 자른 파일 개수만큼 빨라질 것이라 판단했으나 그렇지 않았다. 그 이유는 무엇일까?
+
+   브라우저에서 API을 호출할 때 100MB면 10MB단위로 잘랐기 때문에 10번의 요청을 보냈다. 각 요청마다 서버가 감당하지 못하고, 느리게 처리된 것이다. 그럼 왜 서버가 감당하지 못했냐면? MultipartFile은 스트리밍 방식이 사실 아니었기 때문... MultipartFile을 InputSrteam으로 바꾸었으면 조금 달라지지 않았을까 한다.

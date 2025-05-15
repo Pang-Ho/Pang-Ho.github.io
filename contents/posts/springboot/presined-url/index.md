@@ -14,6 +14,7 @@ series: 'SpringBoot'
 ## 🧪 테스트 환경
 
 > React v18
+>
 > AWS SDK for Java1.x
 
 ## 배경
@@ -212,8 +213,11 @@ series: 'SpringBoot'
 
 > 질문
 > Q1. Presigned URL을 왜 사용하나요?
+>
 > A1. 서버에 파일을 올리지 않고 S3에 직접 파일을 올릴 수 있어, 서버 부담을 현저히 줄힐 수 있음
+>
 > Q2. 보안에는 안좋지 않을까요?
+>
 > A2. 물론 Presigned URL이 유출되면 좋진 않지만, HTTPS로 URL을 받아 사용하고, 유효기간을 설정하여서 쓰기 때문에 적절하게 쓰면 괜찮다. 물론 CORS 설정으로 원하는 URL에서만 들어오게 하면 보안 설정할 수 있다.
 
 ## 결과
