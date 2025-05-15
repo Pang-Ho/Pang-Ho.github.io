@@ -11,7 +11,7 @@ series: 'Nogi'
 ## Nogi란 무엇인가?<br>  
 깃허브와 노션을 연견해주고, Nogi에서 설정한 Notion 템플릿에 내용을 작성하면, 내가 지정한 깃허브 레포지토리에 마크다운 파일을 만들어준다.  
   
-![IMAGE](https://raw.githubusercontent.com/nogi-bot/resources/main/Pang-Ho/images/90458393-3771-49dd-8a7c-8c95c3c1cb44-image.png)  
+![IMAGE](https://raw.githubusercontent.com/nogi-bot/resources/main/Pang-Ho/images/58519bc5-2cee-4db6-8b51-0c06275fef21-image.png)  
 이곳에 글을 작성중이다. 템플릿에 내용을 채우고 nogiStatus를 작성 완료로 변경하면 Nogi bot이 이 내용을 들고 연결된 내 Repository에 커밋을 해준다.  
   
 ## 사용 방법<br>  
@@ -19,9 +19,13 @@ series: 'Nogi'
    1. [https://nogi.co.kr/](https://nogi.co.kr/) 접속  
    1. Github, Notion 아이디와 연결  
    1. Notion에 “**개발자가 제공한 템플릿 사용**” 생성  
+![IMAGE](https://raw.githubusercontent.com/nogi-bot/resources/main/Pang-Ho/images/83e901d8-5f80-4265-bf3f-8734f65e0661-image.png)  
 1. Nogi Setting을 들어가서 Repository 연결을한다.  
+![IMAGE](https://raw.githubusercontent.com/nogi-bot/resources/main/Pang-Ho/images/082a58f2-2361-411b-a752-a4471cdbc678-image.png)  
 1. Notion을 들어가서 아무거나 nogiStatus를 작성완료로 바꾸고, Nogi Setting을 들어가 수동실행을 눌러준다.  
+![IMAGE](https://raw.githubusercontent.com/nogi-bot/resources/main/Pang-Ho/images/2f09cc2b-f587-4ac7-90ef-67b61aee24d2-image.png)  
 1. Github 연결된 Repository에 들어가 issue를 확인한다.  
+![IMAGE](https://raw.githubusercontent.com/nogi-bot/resources/main/Pang-Ho/images/b925aaa2-c38b-43b8-8079-16c5498c5c56-image.png)  
   
 ## 사용 이유<br>  
 현재 내 블로그는 Gatsby라는 프레임워크로 만들어져있다. 그곳에 마크다운으로 작성되어 있는데, 블로그에 글을 작성하려면 vs code도 열어야하고, 사이트에서 잘 보이는지 서버도 켜야하고 불편하다. 그래서 노션에 글을 쓰고, 깃허브에 올려주고 나중에 포스팅이 필요하면 Deploy하면 좋지 않을까 싶어서 사용한다.  
@@ -29,6 +33,10 @@ series: 'Nogi'
 ## 개선할 점<br>  
 1. Repository branch 설정이 없다.  
 1. issue 오류에 정확한 문제 내용이 안뜬다  
+1. 노션에 스크린샷 파일을 모두 이미지 파일로 만들어서 넣어주진 않는다.  
+1. 마크다운으로 모든 내용을 변환해주진 않는다.  
+   1. 아래처럼 리스트 작성 후 shift+enter로 작성된 문단은 사라진다.  
+![IMAGE](https://raw.githubusercontent.com/nogi-bot/resources/main/Pang-Ho/images/a4a552d2-a557-411a-8be1-1dda58ac51d8-image.png)  
   
 ## 작동 원리<br>  
 1. 10분마다 Notion에 작성완료 되어있는 페이지를 조회하고 Markdown으로 파일을 변환한다.  
@@ -48,8 +56,9 @@ series: 'Nogi'
 1. 기존 Repository에 해당 브랜치명을 만들고, Collaborators에 nogi-bot을 추가한다.  
   
 위 방법은 글쓴이가 겪고 시행한 방법이다 ㅜㅜ… 저렇게 설정하니까 이제 돼서 화가 많이 나서 소스를 확인했다.  
-  
+[https://github.com/nogi-org/nogi](https://github.com/nogi-org/nogi)  
 위 Repository는 nogi 소스 Repository다. 코드를 구경해보면 너무 화가난다. 코드 스타일이 너무 깔끔하다. 백엔드 소스가 정말 잘 만들어져 있으니, 한번 보면 좋을 것 같다.   
+  
   
 <details><summary>그럼 글쓴이는 Default Branch를 보게 되어 있으나, 왜 master 브랜치에만 올리는지 소스를 보면서 파악해볼 것이다. (다른 사람 소스 읽는게 너무 즐거워~)</summary>  
   
