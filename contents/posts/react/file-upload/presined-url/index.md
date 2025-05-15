@@ -6,7 +6,8 @@ update: 2025-04-18 00:00:00
 tags:
   - react
   - springboot
-series: 'SpringBoot'
+  - presigned url
+series: 'File Upload'
 ---
 
 # 리액트에서 URL 이동시 감지하여 원하는 로직을 넣어보자
@@ -106,8 +107,11 @@ series: 'SpringBoot'
 
 > 질문
 > Q1. 스트리밍 방식이 무엇인가요?
+>
 > A1. 데이터를 한 번에 처리하지 않고, 일정 단위로 끊어서 순차적으로 처리하는 방식. EKS 같은 메모리를 적게 할당하는 시스템인 경우 파일을 처리할 때 스트리밍 방식을 이용하지 않는다면, 파일 객체를 메모리를 그대로 담기 때문에 OOM이 일어날 수 있음.
+>
 > Q2. POST로 body에 담아 보냈는데 스프링 부트에서는 @RequestParam으로 받나요? @RequestBody가 아닌가요?
+>
 > A2. 프론트에서 FormData를 보내는 경우, FormData는 브라우저에서 Content-Type을 기본적으로 multipart/form-data형식으로 보내기 때문에, 스프링은 @RequestParam으로 받아야 함. 즉, Content-Type 때문이다.
 
 ### 2. Presigned Url로 파일을 올리는 방법

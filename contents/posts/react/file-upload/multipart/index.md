@@ -6,7 +6,9 @@ update: 2025-04-18 00:00:00
 tags:
   - react
   - springboot
-series: 'SpringBoot'
+  - presigned url
+  - multipart
+series: 'File Upload'
 ---
 
 # 리액트에서 URL 이동시 감지하여 원하는 로직을 넣어보자
