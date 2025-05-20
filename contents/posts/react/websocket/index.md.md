@@ -1,13 +1,13 @@
 ---  
 emoji: '💬'  
-title: 'Websocket에 대해 알아보자'  
+title: 'WebSocket에 대해 알아보자'  
 date: 2025-05-20 00:00:00  
 update: 2025-05-20 00:00:00  
 tags:  
   - react  
   - springboot  
   - websocket  
-series: 'Websocket'  
+series: 'WebSocket'  
 ---  
   
 ## 배경<br>  
