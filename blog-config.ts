@@ -6,7 +6,7 @@ const blogConfig = {
   author: 'Pang', // Your Name
   siteUrl: 'https://pang-ho.github.io/', // Your Site URL
   description:
-    '안녕하세요! 왜 이렇게 까지 하지를 담당하는 3년차 프론트엔드 개발자입니다!', // Blog description
+    '안녕하세요! 왜 이렇게 까지 하지를 담당하는 5년차 프론트엔드 개발자입니다!', // Blog description
   links: {
     github: 'https://github.com/Pang-Ho',
     // linkedIn: 'https://linkedin.com',
