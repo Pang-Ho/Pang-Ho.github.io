@@ -5,7 +5,8 @@ import { Link } from 'gatsby';
 
 import blogConfig from '../../../../blog-config';
 
-import { FaSun, FaMoon, FaTags, FaListUl, FaSearch } from 'react-icons/fa';
+import { AiOutlineExperiment } from 'react-icons/ai';
+import { FaListUl, FaMoon, FaSearch, FaSun, FaTags } from 'react-icons/fa';
 
 const HeaderWrapper = styled.header`
   display: block;
@@ -80,6 +81,17 @@ const ToggleWrapper = styled.div`
   margin-right: 15px;
   overflow: hidden;
   box-sizing: border-box;
+
+  & > a {
+    vertical-align: middle;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  & > a > svg {
+    vertical-align: sub;
+  }
 `;
 
 const IconRail = styled.div`
@@ -108,7 +120,7 @@ const Header = ({ toggleTheme }) => {
   const theme = useTheme();
   const [scrollY, setScrollY] = useState();
   const [hidden, setHidden] = useState(false);
-  const { headerTitle, headerSubTitle } = blogConfig;
+  const { headerTitle } = blogConfig;
 
   const checkValue = (value) => {
     return value === null || value === '' || value === undefined;
@@ -139,15 +151,15 @@ const Header = ({ toggleTheme }) => {
   }, []);
   const [showFirstDiv, setShowFirstDiv] = useState(true);
 
-  useEffect(() => {
-    if (!checkValue(headerSubTitle)) {
-      const interval = setInterval(() => {
-        setShowFirstDiv((prev) => !prev);
-      }, 5000);
+  // useEffect(() => {
+  //   if (!checkValue(headerSubTitle)) {
+  //     const interval = setInterval(() => {
+  //       setShowFirstDiv((prev) => !prev);
+  //     }, 5000);
 
-      return () => clearInterval(interval);
-    }
-  }, []);
+  //     return () => clearInterval(interval);
+  //   }
+  // }, []);
 
   return (
     <HeaderWrapper isHidden={hidden}>
@@ -157,7 +169,8 @@ const Header = ({ toggleTheme }) => {
             {showFirstDiv ? (
               <div dangerouslySetInnerHTML={{ __html: headerTitle }}></div>
             ) : (
-              <div dangerouslySetInnerHTML={{ __html: headerSubTitle }}></div>
+              // <div dangerouslySetInnerHTML={{ __html: headerSubTitle }}></div>
+              <></>
             )}
           </Link>
         </BlogTitle>
@@ -181,6 +194,11 @@ const Header = ({ toggleTheme }) => {
           <ToggleWrapper>
             <Link to="/search">
               <FaSearch />
+            </Link>
+          </ToggleWrapper>
+          <ToggleWrapper>
+            <Link to="/sample" aria-label="Sample">
+              <AiOutlineExperiment height={30} xHeight={24} />
             </Link>
           </ToggleWrapper>
         </Menu>

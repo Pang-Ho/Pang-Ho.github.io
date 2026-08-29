@@ -1,10 +1,14 @@
 ---
+emoji: '🚀'
 title: 왜 2번 WAS에서만 Broken Pipe가 발생했을까?
-date: 2026-08-04
-categories: [Infra]
-tags: [Infra, InterMax, RENA, Jenkins]
-series: Infra, Trouble Shooting
-
+date: 2026-08-04 00:00:00
+update: 2026-08-04 16:30:00
+tags:
+  - Infra
+  - InterMax
+  - RENA
+  - Jenkins
+series: Trouble Shooting
 ---
 
 얼마 전 옆자리 팀원으로부터 다급한 도움 요청을 받았습니다. 최근 다른 시스템을 인수인계받아 운영 중인데, APM(모니터링 툴)에서 **이중화된 WAS 중 유독 2번 서버에서만 지속적으로 `Broken Pipe (ClientAbortException)`가 발생**한다는 것이었습니다.
@@ -75,13 +79,11 @@ org.apache.catalina.connector.ClientAbortException: java.io.IOException: Broken 
 
 즉, **트래픽이 특정 WAS로 1:1 고정 매핑되는 구조가 아니라 완전한 교차 분산 구조**였습니다.
 
-
-
 ## 3. . 설정 검증: 미궁으로 빠진 타임아웃
 
 처음 웹 서버 설정 파일을 열었을 때, **2번 WEB 서버의 HTTP 타임아웃이 300초**로 설정되어 있는 것을 확인했습니다.
 
-> *"옳다구나! 2번 웹 서버 타임아웃이 300초라 Broken Pipe가 터진 거였네. 그럼 1번 웹 서버는 타임아웃이 훨씬 길게(600초 이상) 잡혀 있겠구나!"*
+> _"옳다구나! 2번 웹 서버 타임아웃이 300초라 Broken Pipe가 터진 거였네. 그럼 1번 웹 서버는 타임아웃이 훨씬 길게(600초 이상) 잡혀 있겠구나!"_
 
 드디어 원인을 찾았다고 확신하며 곧바로 1번 WEB 서버의 설정 파일을 열었습니다.
 
@@ -96,8 +98,6 @@ org.apache.catalina.connector.ClientAbortException: java.io.IOException: Broken 
 '웹 서버에서 두 WAS로 랜덤 분산하면서도, 특정 WAS에 대해서만 타임아웃을 다르게 줄 수 있는 방법이 있나?'
 
 머리가 복잡해져 아파치 미들웨어 구조를 다시 파고들었습니다. RENA 웹 서버는 Apache 기반이고, Tomcat과의 AJP 연동에 `mod_jk` 모듈을 사용합니다. 찾아보니 `workers.properties` 파일에서 로드밸런서 worker를 정의할 때 WAS 인스턴스별로 타임아웃을 다르게 부여할 수 있는 `reply_timeout` 옵션이 존재한다는 것을 알게 되었습니다.
-
-
 
 ### worker별로 개별 타임아웃을 다르게 설정할 수 있는 예시
 
@@ -119,7 +119,7 @@ worker.was2.port=8009
 worker.was2.reply_timeout=600000
 ```
 
-> *"아, worker 설정에서 1번 WAS와 2번 WAS의 AJP 응답 대기 시간을 다르게 묶어뒀겠구나!"*
+> _"아, worker 설정에서 1번 WAS와 2번 WAS의 AJP 응답 대기 시간을 다르게 묶어뒀겠구나!"_
 
 희망을 품고 두 서버의 `workers.properties` 파일을 열어보았습니다.
 
@@ -134,7 +134,7 @@ worker.was2.reply_timeout=600000
 3. **WEB mod_jk Worker AJP 타임아웃**: 1번, 2번 노드 **모두 설정값 없음 (기본값 동일)**
 4. **WAS Tomcat 커넥터 타임아웃**: 1번, 2번 노드 **모두 300초로 동일**
 
-> *"설정 파일만 수정해두고 실제 프로세스 재시작(Reload)을 안 해서 반영이 안 된 건가?"*
+> _"설정 파일만 수정해두고 실제 프로세스 재시작(Reload)을 안 해서 반영이 안 된 건가?"_
 
 혹시나 싶어 확인해봤지만, 최근 정기 PM 작업으로 두 서버 모두 깔끔하게 재기동된 상태였습니다.
 
@@ -145,8 +145,6 @@ worker.was2.reply_timeout=600000
 나 : **EC2 2대에서 각 EC2가 웹서버와 와스를 갖고있고, 각 웹서버가 와스 두 개를 다 알고 있는 상태에서 랜덤으로 트래픽을 보내는데, 이 상황에서 2번 와스만 브로큰 파이프가 터지는 상황인데 어떤걸 의심할 수 있을까요?**
 
 전임자 : **그거 젠킨스 스케줄러인데... 이유는 모르겠어요**
-
-
 
 ## 4. 시점의 전환: 호출 주체(Jenkins) 확인
 
@@ -178,7 +176,7 @@ WEB (Apache mod_jk, 타임아웃 300초)
    │ [AJP]
    ▼
 WAS (Spring Boot / Tomcat)
-   │ 
+   │
    │ ──> 타 ERP 시스템 연동 및 데이터 처리 진행 (약 400~600초 소요)
    │     (WAS 내부 비즈니스 로직은 백그라운드에서 정상 완료됨)
    │
@@ -193,8 +191,6 @@ WAS가 응답(Response)을 반환하려 하지만, 이미 AJP/HTTP 소켓이 끊
 ```
 
 결국 **1번 WAS와 2번 WAS 모두 동일하게 Broken Pipe가 발생**하고 있었던 것입니다.
-
-
 
 ## 5. 근본 원인(Root Cause): APM 설정 차이
 
@@ -212,16 +208,12 @@ EXCLUDED_EXCEPTION = X
 
 원인은 허탈할 정도로 단순했습니다. 과거 어떤 이유에선지 **1번 WAS의 모니터링 에이전트에만 `ClientAbortException`이 예외 무시(Exclude) 처리**되어 있었고, 2번 WAS는 기본 상태로 남아 있어 에러가 그대로 수집되었던 것입니다.
 
-
-
 ## 6. 조치 및 개선 사항
 
 ### 단기 조치 (인프라 및 모니터링 정합성 동기화)
 
 - **모니터링 설정 동기화**: 1번, 2번 WAS의 InterMax 에이전트 설정을 동일하게 맞춰 관측 정합성을 확보했습니다.
 - **타임아웃 임계치 상향**: 300초를 초과하는 대용량 인터페이스 처리를 위해 L4, Apache HTTP, mod_jk worker, WAS 커넥터 타임아웃을 안전한 범위(예: 900초 이상)로 상향 조정했습니다.
-
-
 
 ## 7. 마치며
 

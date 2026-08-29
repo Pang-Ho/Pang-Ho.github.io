@@ -1,13 +1,13 @@
+import { Link } from 'gatsby';
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'gatsby';
 
-const TagListWrapper = styled.div`
+export const TagListWrapper = styled.div`
   margin-bottom: 16px;
   word-break: break-all;
 `;
 
-const TagLink = styled.div`
+export const TagLink = styled.div`
   display: inline-block;
   padding: 3.6px 11.2px;
   margin-right: 8px;

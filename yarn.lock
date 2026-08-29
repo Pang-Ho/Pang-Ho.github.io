@@ -11140,6 +11140,11 @@ react-transition-group@^4.4.5:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-window@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-window/-/react-window-2.3.0.tgz#92fefee75b7de56a31204dfffc492b84136e4783"
+  integrity sha512-FW6TIpaOH646k51X7yE+LSCWGkt5Pfsnc1fVyq/sCI9h0pTqmMiBXM04pzFKg3Bt7NGkeV6kqbU8d/QjmFS7Ug==
+
 react@^18.2.0:
   version "18.3.1"
   resolved "https://registry.yarnpkg.com/react/-/react-18.3.1.tgz#49ab892009c53933625bd16b2533fc754cab2891"
